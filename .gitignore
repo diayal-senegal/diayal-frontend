@@ -90,3 +90,9 @@ tsconfig.tsbuildinfo
 *.tar.gz
 *.rar
 *.7z
+*.exe
+*.ova
+*.dmg
+*.pkg
+*.deb
+*.rpm
