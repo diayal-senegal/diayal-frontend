@@ -213,22 +213,22 @@ const Footer = () => {
                             <p className="text-sm text-gray-400 mb-3">Suivez-nous sur les réseaux sociaux</p>
                             <ul className="flex justify-start items-center gap-3">
                                 <li>
-                                    <a className="w-[40px] h-[40px] hover:bg-[#1877f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1877f2] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="#" title="Facebook">
+                                    <a className="w-[40px] h-[40px] hover:bg-[#1877f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1877f2] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="https://www.facebook.com/profile.php?id=61582393357735&locale=fr_FR" title="Facebook">
                                         <FaFacebookF />
                                     </a>
                                 </li>
                                 <li>
-                                    <a className="w-[40px] h-[40px] hover:bg-[#000000] hover:text-white flex justify-center items-center rounded-full bg-white text-[#000000] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="#" title="TikTok">
+                                    <a className="w-[40px] h-[40px] hover:bg-[#000000] hover:text-white flex justify-center items-center rounded-full bg-white text-[#000000] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="https://www.tiktok.com/@diayal1?lang=fr" title="TikTok">
                                         <AiFillTikTok />
                                     </a>
                                 </li>
                                 <li>
-                                    <a className="w-[40px] h-[40px] hover:bg-gradient-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:text-white flex justify-center items-center rounded-full bg-white text-[#e4405f] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="#" title="Instagram">
+                                    <a className="w-[40px] h-[40px] hover:bg-gradient-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:text-white flex justify-center items-center rounded-full bg-white text-[#e4405f] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="https://www.instagram.com/diayal_officiel/" title="Instagram">
                                         <FaSquareInstagram />
                                     </a>
                                 </li>
                                 <li>
-                                    <a className="w-[40px] h-[40px] hover:bg-[#1da1f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1da1f2] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="#" title="Twitter">
+                                    <a className="w-[40px] h-[40px] hover:bg-[#1da1f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1da1f2] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="https://x.com/Diayal_officiel" title="Twitter">
                                         <FaTwitter />
                                     </a>
                                 </li>

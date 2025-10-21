@@ -208,13 +208,13 @@ const Header = () => {
                   <img src="http://localhost:3000/images/logo_diayal.svg" alt="Logo Diayal" className='h-[120px]' />
                 </Link> */}
                 <div className='flex items-center gap-2'>
-                  <a className="w-[20px] h-[20px] hover:bg-[#1877f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1877f2] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="#" title="Facebook">
+                  <a className="w-[20px] h-[20px] hover:bg-[#1877f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1877f2] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="https://www.facebook.com/profile.php?id=61582393357735&locale=fr_FR" title="Facebook">
                   <FaFacebookF className='text-md' /></a>
-                   <a className="w-[20px] h-[20px] hover:bg-[#000000] hover:text-white flex justify-center items-center rounded-full bg-white text-[#000000] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="#" title="TikTok">
+                   <a className="w-[20px] h-[20px] hover:bg-[#000000] hover:text-white flex justify-center items-center rounded-full bg-white text-[#000000] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="https://www.tiktok.com/@diayal1?lang=fr" title="TikTok">
                   <AiFillTikTok className='text-md' /></a>
-                  <a className="w-[20px] h-[20px] hover:bg-gradient-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:text-white flex justify-center items-center rounded-full bg-white text-[#e4405f] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="#" title="Instagram">
+                  <a className="w-[20px] h-[20px] hover:bg-gradient-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:text-white flex justify-center items-center rounded-full bg-white text-[#e4405f] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="https://www.instagram.com/diayal_officiel/" title="Instagram">
                   <FaSquareInstagram className='text-md' /></a>
-                   <a className="w-[20px] h-[20px] hover:bg-[#1da1f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1da1f2] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="#" title="Twitter">
+                   <a className="w-[20px] h-[20px] hover:bg-[#1da1f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1da1f2] transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg" href="https://x.com/Diayal_officiel" title="Twitter">
                   <FaTwitter className='text-md' /></a>
                 </div>
               </div>
