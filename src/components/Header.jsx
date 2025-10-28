@@ -126,16 +126,16 @@ const Header = () => {
 
             {/* Réseaux sociaux */}
             <div className='flex items-center gap-2'>
-              <a className="w-[28px] h-[28px] sm:w-[30px] sm:h-[30px] hover:bg-[#1877f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1877f2] transition-all duration-300 hover:scale-110" href="https://www.facebook.com/profile.php?id=61582393357735&locale=fr_FR" title="Facebook">
+              <a className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px] hover:bg-[#1877f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1877f2] transition-all duration-300 hover:scale-110" href="https://www.facebook.com/profile.php?id=61582393357735&locale=fr_FR" title="Facebook">
                 <FaFacebookF className='text-sm' />
               </a>
-              <a className="w-[28px] h-[28px] sm:w-[30px] sm:h-[30px] hover:bg-[#000000] hover:text-white flex justify-center items-center rounded-full bg-white text-[#000000] transition-all duration-300 hover:scale-110" href="https://www.tiktok.com/@diayal1?lang=fr" title="TikTok">
+              <a className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px] hover:bg-[#000000] hover:text-white flex justify-center items-center rounded-full bg-white text-[#000000] transition-all duration-300 hover:scale-110" href="https://www.tiktok.com/@diayal1?lang=fr" title="TikTok">
                 <AiFillTikTok className='text-sm' />
               </a>
-              <a className="w-[28px] h-[28px] sm:w-[30px] sm:h-[30px] hover:bg-gradient-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:text-white flex justify-center items-center rounded-full bg-white text-[#e4405f] transition-all duration-300 hover:scale-110" href="https://www.instagram.com/diayal_officiel/" title="Instagram">
+              <a className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px] hover:bg-gradient-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:text-white flex justify-center items-center rounded-full bg-white text-[#e4405f] transition-all duration-300 hover:scale-110" href="https://www.instagram.com/diayal_officiel/" title="Instagram">
                 <FaSquareInstagram className='text-sm' />
               </a>
-              <a className="w-[28px] h-[28px] sm:w-[30px] sm:h-[30px] hover:bg-[#1da1f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1da1f2] transition-all duration-300 hover:scale-110" href="https://x.com/Diayal_officiel" title="Twitter">
+              <a className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px hover:bg-[#1da1f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1da1f2] transition-all duration-300 hover:scale-110" href="https://x.com/Diayal_officiel" title="Twitter">
                 <FaTwitter className='text-sm' />
               </a>
             </div>

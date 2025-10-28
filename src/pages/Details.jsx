@@ -291,32 +291,28 @@ const Details = () => {
       <ul className="flex justify-start items-center gap-3">
         <li>
           <a
-            className="w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-indigo-500 text-white rounded-full"
-            href="https://www.facebook.com"
+            className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px] hover:bg-[#1877f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1877f2] transition-all duration-300 hover:scale-110" href="https://www.facebook.com/profile.php?id=61582393357735&locale=fr_FR" title="Facebook"
           >
             <FaFacebookF />
           </a>
         </li>
         <li>
           <a
-            className="w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-blue-500 text-white rounded-full"
-            href="https://www.tiktok.com"
+            className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px] hover:bg-[#000000] hover:text-white flex justify-center items-center rounded-full bg-white text-[#000000] transition-all duration-300 hover:scale-110" href="https://www.tiktok.com/@diayal1?lang=fr" title="TikTok"
           >
             <AiFillTikTok />
           </a>
         </li>
         <li>
           <a
-            className="w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-purple-500 text-white rounded-full"
-            href="https://www.instagram.com"
+            className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px] hover:bg-gradient-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:text-white flex justify-center items-center rounded-full bg-white text-[#e4405f] transition-all duration-300 hover:scale-110" href="https://www.instagram.com/diayal_officiel/" title="Instagram"
           >
             <FaSquareInstagram />
           </a>
         </li>
         <li>
           <a
-            className="w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-cyan-500 text-white rounded-full"
-            href="https://twitter.com"
+            className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px hover:bg-[#1da1f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1da1f2] transition-all duration-300 hover:scale-110" href="https://x.com/Diayal_officiel" title="Twitter"
           >
             <FaTwitter />
           </a>

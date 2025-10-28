@@ -64,7 +64,7 @@ const FeatureProducts = ({ products }) => {
         </div>
 
         {/* Grid (même layout responsive) */}
-        <div className="w-full grid grid-cols-4 md-lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6">
+        <div className="w-full grid grid-cols-4 md-lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-6">
         {products.map((p, i) => (
           <div
             key={i}

@@ -34,29 +34,25 @@ const Home = () => {
     <div className='w-full bg-gray-50'>
       <Header />
 
-      {/* --- Section Bannière style Amazon --- */}
-      <div className="relative h-[500px] sm:h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
-        {/* Image de fond */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://images-eu.ssl-images-amazon.com/images/G/31/img23/Fashion/Event/Gateway/AugART23/AFD_PC_HERO_2x._CB599381476_.jpg')",
-          }}
-        ></div>
-
-        {/* Dégradé fondu vers le bas */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-transparent to-transparent"></div>
-
-        {/* Bannière dynamique */}
-        <div className="relative z-10">
+      {/* --- Section Bannière + Catégories unifiée --- */}
+      <div 
+        className="relative bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('https://images-eu.ssl-images-amazon.com/images/G/31/img23/Fashion/Event/Gateway/AugART23/AFD_PC_HERO_2x._CB599381476_.jpg')"
+        }}
+      >
+        {/* Dégradé pour la lisibilité */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-gray-50/90"></div>
+        
+        {/* Bannière */}
+        <div className="relative z-10 h-[390px] sm:h-[180px] md:h-[200px] lg:h-[220px]">
           <Banner />
         </div>
-      </div>
-
-      {/* --- Section Catégories (superposée à la bannière) --- */}
-      <div className="relative z-20 -mt-20 sm:-mt-10">
-        <Categorys />
+        
+        {/* Carousel des catégories */}
+        <div className="relative z-10">
+          <Categorys />
+        </div>
       </div>
 
       {/* --- Produits vedettes (flottants) --- */}

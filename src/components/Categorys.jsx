@@ -37,17 +37,17 @@ const Categorys = () => {
         }
     };
     return (
-        <div className='bg-gray-50 py-8'>
+        <div className='py-8'>
             <div className='w-[87%] mx-auto relative'>
                 {/* Titre style Amazon */}
                 <div className='mb-6'>
                     <div className='flex items-center justify-between'>
-                        <h2 className='text-2xl font-bold text-gray-900 mb-2'>Meilleures catégories</h2>
-                        <Link to='/categories' className='text-sm text-blue-600 hover:text-blue-800 hover:underline'>
+                        {/* <h2 className='text-2xl font-bold text-gray-900 mb-2'>Meilleures catégories</h2> */}
+                        {/* <Link to='/shops' className='text-sm text-blue-600 hover:text-blue-800 hover:underline'>
                             Voir tout
-                        </Link>
+                        </Link> */}
                     </div>
-                    <p className='text-sm text-gray-600'>Découvrez nos catégories les plus populaires</p>
+                    {/* <p className='text-sm text-gray-600'>Découvrez nos catégories les plus populaires</p> */}
                 </div>
            
                 <Carousel

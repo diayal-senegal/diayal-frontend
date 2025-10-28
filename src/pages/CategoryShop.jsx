@@ -78,7 +78,7 @@ const CategoryShop = () => {
     return (
         <div>
            <Header />
-           <section className='bg-[url(http://localhost:3000/images/banner/shop.png)] bg-cover bg-no-repeat h-[220px] mt-6 relative bg-left'>
+           <section className='bg-[url(http://localhost:3000/images/banner/diay.png)] bg-cover bg-no-repeat h-[220px] mt-6 relative bg-left'>
              <div className='absolute left-0 top-0 w-full h-full bg-[#2422228a]'>
               <div className='w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] mx-auto h-full'>
                 <div className='flex flex-col justify-center gap-1 h-full w-full items-center text-white'>
