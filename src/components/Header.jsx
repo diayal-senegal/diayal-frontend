@@ -152,12 +152,12 @@ const Header = () => {
 
             {/* Connexion */}
             {userInfo ? (
-              <Link to='/dashboard' className='flex items-center gap-1 text-black hover:text-green-300 transition-colors text-lg sm:text-base'>
+              <Link to='/dashboard' className='flex items-center gap-1 text-black hover:text-white transition-colors text-lg sm:text-base'>
                 <FaUser className='text-xl sm:text-lg' />
                 <span className='text-lg sm:text-base font-medium'> Bonjour, {userInfo.name}</span>
               </Link>
             ) : (
-              <Link to='/login' className='flex items-center gap-1 text-black hover:text-green-300 transition-colors text-lg sm:text-base'>
+              <Link to='/login' className='flex items-center gap-1 text-black hover:text-white transition-colors text-lg sm:text-base'>
                 <FaLock className='text-xl sm:text-lg' />
                 <span className='text-lg sm:text-base font-medium'>Se connecter</span>
               </Link>
@@ -167,7 +167,7 @@ const Header = () => {
             <div className='flex items-center gap-3'>
               <div
                 onClick={() => navigate(userInfo ? '/dashboard/my-wishlist' : '/login')}
-                className='relative cursor-pointer text-black hover:text-green-200 transition-colors'
+                className='relative cursor-pointer text-black hover:text-white transition-colors'
               >
                 <FaHeart className='text-lg sm:text-xl' />
                 {wishlist_count !== 0 && (
@@ -179,7 +179,7 @@ const Header = () => {
 
               <div
                 onClick={redirect_card_page}
-                className='relative cursor-pointer text-black hover:text-green-200 transition-colors'
+                className='relative cursor-pointer text-black hover:text-white transition-colors'
               >
                 <FaCartShopping className='text-lg sm:text-xl' />
                 {card_product_count !== 0 && (
