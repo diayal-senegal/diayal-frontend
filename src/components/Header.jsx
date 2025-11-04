@@ -8,6 +8,8 @@ import { IoMdArrowDropdown, IoIosArrowDown } from "react-icons/io";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_card_products, get_wishlist_products } from '../store/reducers/cardReducer';
+import navBg from '../assets/nav-bg.png';
+
 
 const Header = () => {
 
@@ -63,8 +65,20 @@ const Header = () => {
 
 
           {/* HEADER GLOBAL RESPONSIVE */}
-      <div className='bg-[#73aff7] py-3'>
-        <div className='w-[95%] mx-auto flex flex-wrap items-center justify-between gap-4'>
+      {/* HEADER GLOBAL AVEC IMAGE DE FOND */}
+      <div
+        className='relative py-3'
+        style={{
+          backgroundImage: `url(${navBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Overlay sombre */}
+        <div className='absolute inset-0 bg-[#73aff7]/80'></div>
+
+        <div className='relative w-[95%] mx-auto flex flex-wrap items-center justify-between gap-4'>
 
           {/* GAUCHE : Logo + Support */}
           <div className='flex items-center gap-3 flex-wrap'>
@@ -85,7 +99,7 @@ const Header = () => {
                 href="https://wa.me/0033698135322?text=Bonjour,%20j'ai%20besoin%20d'aide"
                 target="_blank"
                 rel="noopener noreferrer"
-                className='flex items-center gap-1 hover:text-green-600 transition-colors'
+                className='flex items-center gap-1 hover:text-green-300 transition-colors'
               >
                 <FaWhatsapp />
                 <span>WhatsApp</span>
@@ -142,12 +156,12 @@ const Header = () => {
 
             {/* Connexion */}
             {userInfo ? (
-              <Link to='/dashboard' className='flex items-center gap-1 text-white hover:text-green-600 transition-colors text-lg sm:text-base'>
+              <Link to='/dashboard' className='flex items-center gap-1 text-white hover:text-green-300 transition-colors text-lg sm:text-base'>
                 <FaUser className='text-xl sm:text-lg' />
                 <span className='text-lg sm:text-base font-medium'> Bonjour, {userInfo.name}</span>
               </Link>
             ) : (
-              <Link to='/login' className='flex items-center gap-1 text-white hover:text-green-600 transition-colors text-lg sm:text-base'>
+              <Link to='/login' className='flex items-center gap-1 text-white hover:text-green-300 transition-colors text-lg sm:text-base'>
                 <FaLock className='text-xl sm:text-lg' />
                 <span className='text-lg sm:text-base font-medium'>Se connecter</span>
               </Link>
@@ -157,7 +171,7 @@ const Header = () => {
             <div className='flex items-center gap-3'>
               <div
                 onClick={() => navigate(userInfo ? '/dashboard/my-wishlist' : '/login')}
-                className='relative cursor-pointer text-white hover:text-green-600 transition-colors'
+                className='relative cursor-pointer text-white hover:text-green-300 transition-colors'
               >
                 <FaHeart className='text-lg sm:text-xl' />
                 {wishlist_count !== 0 && (
@@ -169,7 +183,7 @@ const Header = () => {
 
               <div
                 onClick={redirect_card_page}
-                className='relative cursor-pointer text-white hover:text-green-600 transition-colors'
+                className='relative cursor-pointer text-white hover:text-green-300 transition-colors'
               >
                 <FaCartShopping className='text-lg sm:text-xl' />
                 {card_product_count !== 0 && (
@@ -185,28 +199,40 @@ const Header = () => {
       </div>
 
       {/* BARRE DE NAVIGATION (TOUJOURS VISIBLE, CENTRÉE ET ADAPTATIVE) */}
-      <div className='bg-[#37475A] py-2'>
-        <div className='w-[95%] mx-auto'>
-          <div className='flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-center'>
-            {[
-              { to: '/', label: 'Accueil' },
-              { to: '/shops', label: 'Boutique' },
-              { to: '/deals', label: 'Promotions' },
-              { to: '/bestsellers', label: 'Meilleures ventes' },
-              { to: '/new-arrivals', label: 'Nouveautés' },
-              { to: '/about', label: 'À propos' },
-            ].map(link => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`text-white hover:text-green-400 transition-colors font-medium text-md sm:text-sm ${pathname === link.to ? 'text-green-400' : ''}`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+<div
+  className='relative py-2'
+  style={{
+    backgroundImage: `url(${navBg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
+  }}
+>
+  {/* Overlay sombre pour lisibilité */}
+  <div className='absolute inset-0 bg-[#37475A]/80'></div>
+
+  <div className='relative w-[95%] mx-auto'>
+    <div className='flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-center'>
+      {[
+        { to: '/', label: 'Accueil' },
+        { to: '/shops', label: 'Boutique' },
+        { to: '/deals', label: 'Promotions' },
+        { to: '/bestsellers', label: 'Meilleures ventes' },
+        { to: '/new-arrivals', label: 'Nouveautés' },
+        { to: '/about', label: 'À propos' },
+      ].map(link => (
+        <Link
+          key={link.to}
+          to={link.to}
+          className={`text-white hover:text-green-400 transition-colors font-medium text-md sm:text-sm ${pathname === link.to ? 'text-green-400' : ''}`}
+        >
+          {link.label}
+        </Link>
+      ))}
+    </div>
+  </div>
+</div>
+
     </>
   );
 };
