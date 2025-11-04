@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { MdEmail } from "react-icons/md";
-import { MdOutlinePhoneAndroid } from "react-icons/md";
-import { FaFacebookF, FaUser, FaList, FaPhoneAlt, FaSearch } from "react-icons/fa";
+import { FaFacebookF, FaUser, FaSearch } from "react-icons/fa";
 import { FaTwitter, FaSquareInstagram, FaLock, FaHeart, FaCartShopping, FaWhatsapp } from "react-icons/fa6";
 import { AiFillTikTok } from "react-icons/ai";
-import { IoMdArrowDropdown, IoIosArrowDown } from "react-icons/io";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_card_products, get_wishlist_products } from '../store/reducers/cardReducer';
@@ -20,10 +18,6 @@ const Header = () => {
     const {card_product_count, wishlist_count } = useSelector(state => state.card)
 
     const {pathname} = useLocation()
-
-    const [showSidebar, setShowSidebar] = useState(true)
-    const [categoryShow, setCategoryShow] = useState(true)
-
     const [searchValue, setSearchValue] = useState('')
     const [category, setCategory] = useState('')
 
@@ -76,7 +70,7 @@ const Header = () => {
         }}
       >
         {/* Overlay sombre */}
-        <div className='absolute inset-0 bg-[#73aff7]/80'></div>
+        <div className='absolute inset-0 bg-[#F5FFFA]/70'></div>
 
         <div className='relative w-[95%] mx-auto flex flex-wrap items-center justify-between gap-4'>
 
@@ -90,16 +84,18 @@ const Header = () => {
               />
             </Link>
 
-            <div className='flex items-center gap-3 text-white text-xs sm:text-sm flex-wrap'>
-              <div className='flex items-center gap-1'>
+            <div className='flex items-center gap-3 text-black text-xs sm:text-sm flex-wrap'>
+            <Link to='/contact'>
+              <div className='flex items-center gap-1  hover:text-white transition-colors' >
                 <MdEmail />
                 <span>support@diayal.sn</span>
               </div>
+              </Link>
               <a
                 href="https://wa.me/0033698135322?text=Bonjour,%20j'ai%20besoin%20d'aide"
                 target="_blank"
                 rel="noopener noreferrer"
-                className='flex items-center gap-1 hover:text-green-300 transition-colors'
+                className='flex items-center gap-1 hover:text-green-800 transition-colors'
               >
                 <FaWhatsapp />
                 <span>WhatsApp</span>
@@ -156,12 +152,12 @@ const Header = () => {
 
             {/* Connexion */}
             {userInfo ? (
-              <Link to='/dashboard' className='flex items-center gap-1 text-white hover:text-green-300 transition-colors text-lg sm:text-base'>
+              <Link to='/dashboard' className='flex items-center gap-1 text-black hover:text-green-300 transition-colors text-lg sm:text-base'>
                 <FaUser className='text-xl sm:text-lg' />
                 <span className='text-lg sm:text-base font-medium'> Bonjour, {userInfo.name}</span>
               </Link>
             ) : (
-              <Link to='/login' className='flex items-center gap-1 text-white hover:text-green-300 transition-colors text-lg sm:text-base'>
+              <Link to='/login' className='flex items-center gap-1 text-black hover:text-green-300 transition-colors text-lg sm:text-base'>
                 <FaLock className='text-xl sm:text-lg' />
                 <span className='text-lg sm:text-base font-medium'>Se connecter</span>
               </Link>
@@ -171,7 +167,7 @@ const Header = () => {
             <div className='flex items-center gap-3'>
               <div
                 onClick={() => navigate(userInfo ? '/dashboard/my-wishlist' : '/login')}
-                className='relative cursor-pointer text-white hover:text-green-300 transition-colors'
+                className='relative cursor-pointer text-black hover:text-green-200 transition-colors'
               >
                 <FaHeart className='text-lg sm:text-xl' />
                 {wishlist_count !== 0 && (
@@ -183,7 +179,7 @@ const Header = () => {
 
               <div
                 onClick={redirect_card_page}
-                className='relative cursor-pointer text-white hover:text-green-300 transition-colors'
+                className='relative cursor-pointer text-black hover:text-green-200 transition-colors'
               >
                 <FaCartShopping className='text-lg sm:text-xl' />
                 {card_product_count !== 0 && (
