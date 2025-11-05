@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import './debug'; // Debug temporaire
 import Home from './pages/Home';
 import Shops from './pages/Shops';
 import Card from './pages/Card';
