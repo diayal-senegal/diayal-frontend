@@ -104,6 +104,15 @@ useEffect(() => {
                                 </div>
                             </div>
 
+                            <div className='text-right'>
+                                <Link 
+                                    to='/forgot-password' 
+                                    className='text-sm text-black hover:text-green-700 font-medium hover:underline transition duration-200'
+                                >
+                                    Mot de passe oublié ?
+                                </Link>
+                            </div>
+
                             <button className='w-full py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition duration-200 transform hover:-translate-y-0.5'>
                                 Se connecter
                             </button>

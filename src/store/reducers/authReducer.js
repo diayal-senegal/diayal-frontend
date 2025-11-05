@@ -35,6 +35,32 @@ export const customer_login = createAsyncThunk(
 )
 //End Method
 
+export const forgot_password = createAsyncThunk(
+    'auth/forgot_password',
+    async(email, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const {data} = await api.post('/customer/forgot-password', { email })
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+//End Method
+
+export const reset_password = createAsyncThunk(
+    'auth/reset_password',
+    async(info, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const {data} = await api.post('/customer/reset-password', info)
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+//End Method
+
 const decodeToken = (token) => {
  if (token) {
     const userInfo = jwtDecode(token)
@@ -93,6 +119,30 @@ export const authReducer = createSlice({
                   state.successMessage = payload.message; 
                    state.loader = false;
                    state.userInfo = userInfo
+               })
+
+               .addCase(forgot_password.pending, (state, { payload }) => {
+                  state.loader = true; 
+               })
+               .addCase(forgot_password.rejected, (state, { payload }) => {
+                  state.errorMessage = payload.error; 
+                   state.loader = false; 
+               })
+               .addCase(forgot_password.fulfilled, (state, { payload }) => {
+                  state.successMessage = payload.message; 
+                   state.loader = false;
+               })
+
+               .addCase(reset_password.pending, (state, { payload }) => {
+                  state.loader = true; 
+               })
+               .addCase(reset_password.rejected, (state, { payload }) => {
+                  state.errorMessage = payload.error; 
+                   state.loader = false; 
+               })
+               .addCase(reset_password.fulfilled, (state, { payload }) => {
+                  state.successMessage = payload.message; 
+                   state.loader = false;
                })
         
 

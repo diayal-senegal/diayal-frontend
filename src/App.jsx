@@ -8,6 +8,8 @@ import Shipping from './pages/Shipping';
 import Details from './pages/Details';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import { useDispatch } from 'react-redux';
 import { get_category } from './store/reducers/homeReducer';
 import CategoryShop from './pages/CategoryShop';
@@ -57,6 +59,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/shops" element={<Shops />} />
         <Route path="/card" element={<Card />} />
         <Route path="/shipping" element={<Shipping />} />
