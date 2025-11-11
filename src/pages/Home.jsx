@@ -7,6 +7,7 @@ import Products from '../components/products/Products';
 import Footer from '../components/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_products } from '../store/reducers/homeReducer';
+import navBg from '../assets/nav-bg.png';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,17 @@ const Home = () => {
   }, [dispatch]);
 
   return (
-    <div className='w-full bg-gray-50'>
+    <div 
+      className='w-full bg-gray-50 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed'
+      style={{
+        backgroundImage: `url(${navBg})`,
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      {/* Overlay pour améliorer la lisibilité */}
+      <div className='absolute inset-0 bg-white/10 pointer-events-none'></div>
+      
+      <div className='relative z-10'>
       <Header />
 
       {/* --- Section Bannière + Catégories unifiée --- */}
@@ -81,7 +92,8 @@ const Home = () => {
         </div>
       </div>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };

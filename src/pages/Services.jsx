@@ -103,7 +103,7 @@ const Services = () => {
                 <div className="text-center">
                   <div className="text-3xl sm:text-4xl mb-2">🏦</div>
                   <h4 className="font-semibold mb-1">Marketplace</h4>
-                  <p className="text-sm text-indigo-100">Espace pour vendeurs locaux et internationaux</p>
+                  <p className="text-sm text-indigo-100">Espace pour artisans locaux</p>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl sm:text-4xl mb-2">🇸🇳</div>
@@ -118,7 +118,7 @@ const Services = () => {
                 <div className="text-center">
                   <div className="text-3xl sm:text-4xl mb-2">🌍</div>
                   <h4 className="font-semibold mb-1">International</h4>
-                  <p className="text-sm text-indigo-100">Livraison dans le monde entier</p>
+                  <p className="text-sm text-indigo-100">Livraison dans le monde entier bientôt disponible !</p>
                 </div>
               </div>
             </div>
