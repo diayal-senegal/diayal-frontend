@@ -8,28 +8,44 @@ const Banner = () => {
 
     useEffect(() => {
         const loadBanners = async () => {
-            // 1. Essayer localStorage frontend
-            let frontendBanners = JSON.parse(localStorage.getItem('frontendBanners') || '[]');
-            
-            // 2. Si vide, essayer de charger depuis banners.json
-            if (frontendBanners.length === 0) {
-                try {
-                    const response = await fetch('/banners.json?t=' + Date.now());
-                    if (response.ok) {
-                        const jsonBanners = await response.json();
-                        if (jsonBanners && jsonBanners.length > 0) {
-                            frontendBanners = jsonBanners;
-                            localStorage.setItem('frontendBanners', JSON.stringify(jsonBanners));
-                        }
-                    }
-                } catch (error) {
-                    console.log('Erreur chargement banners.json');
+    try {
+        // 1. Appeler l'API en priorité
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/banners`);
+        if (response.ok) {
+            const data = await response.json();
+            if (data.banners && data.banners.length > 0) {
+                setBanners(data.banners);
+                console.log('Bannières chargées depuis API:', data.banners.length);
+                return;
+            }
+        }
+    } catch (error) {
+        console.log('Erreur API banners:', error);
+    }
+    
+    // 2. Fallback vers localStorage si API échoue
+    let frontendBanners = JSON.parse(localStorage.getItem('frontendBanners') || '[]');
+    
+    // 3. Fallback vers banners.json si localStorage vide
+    if (frontendBanners.length === 0) {
+        try {
+            const response = await fetch('/banners.json?t=' + Date.now());
+            if (response.ok) {
+                const jsonBanners = await response.json();
+                if (jsonBanners && jsonBanners.length > 0) {
+                    frontendBanners = jsonBanners;
+                    localStorage.setItem('frontendBanners', JSON.stringify(jsonBanners));
                 }
             }
-            
-            setBanners(frontendBanners);
-            console.log('Bannières chargées:', frontendBanners.length);
-        };
+        } catch (error) {
+            console.log('Erreur chargement banners.json');
+        }
+    }
+    
+    setBanners(frontendBanners);
+    console.log('Bannières chargées:', frontendBanners.length);
+};
+
 
         loadBanners();
         
