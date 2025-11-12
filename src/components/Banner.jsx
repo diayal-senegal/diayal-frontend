@@ -113,7 +113,7 @@ const Banner = () => {
                 <div 
                     className="absolute inset-0 bg-contain bg-no-repeat bg-center overflow-hidden cursor-pointer group"
                     onClick={() => handleBannerClick(banner)}
-                    style={{ backgroundImage: `url(${banner.image})` }}
+                    style={{ backgroundImage: `url(${banner.banner})` }}
                 >
                     {/* Overlay sombre comme panier/shipping */}
                     {/* <div className="absolute inset-0 bg-[#2422228a]"></div> */}
