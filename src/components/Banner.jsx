@@ -10,10 +10,11 @@ const Banner = () => {
         const loadBanners = async () => {
     try {
         // 1. Appeler l'API en priorité
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/banners`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/banners/published`);
         if (response.ok) {
             const data = await response.json();
-            if (data.banners && data.banners.length > 0) {
+            console.log('Réponse API banners:', data);
+            if (data.success && data.banners && data.banners.length > 0) {
                 setBanners(data.banners);
                 console.log('Bannières chargées depuis API:', data.banners.length);
                 return;
@@ -66,7 +67,7 @@ const Banner = () => {
 
         window.addEventListener('message', handleMessage);
         window.addEventListener('storage', handleStorageChange);
-        const interval = setInterval(loadBanners, 3000);
+        const interval = setInterval(loadBanners, 7000);
 
         return () => {
             window.removeEventListener('message', handleMessage);
@@ -90,9 +91,20 @@ const Banner = () => {
     }
 
     const banner = banners[currentBanner];
+    
+    // Vérification de sécurité
+    if (!banner) {
+        return null;
+    }
 
     const handleBannerClick = (banner) => {
-        console.log('Clic sur bannière de:', banner.sellerName, 'Action:', banner.clickAction);
+        console.log('Clic sur bannière de:', banner.sellerName || 'Vendeur', 'Action:', banner.clickAction);
+        
+        // Vérifier que banner existe et a les propriétés nécessaires
+        if (!banner) {
+            navigate('/products');
+            return;
+        }
         
         if (banner.clickAction === 'product' && banner.productSlug) {
             // Naviguer vers le produit spécifique
@@ -113,7 +125,7 @@ const Banner = () => {
                 <div 
                     className="absolute inset-0 bg-contain bg-no-repeat bg-center overflow-hidden cursor-pointer group"
                     onClick={() => handleBannerClick(banner)}
-                    style={{ backgroundImage: `url(${banner.banner})` }}
+                    style={{ backgroundImage: `url(${banner.image || banner.banner})` }}
                 >
                     {/* Overlay sombre comme panier/shipping */}
                     {/* <div className="absolute inset-0 bg-[#2422228a]"></div> */}
