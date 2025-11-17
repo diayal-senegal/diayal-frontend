@@ -57,7 +57,7 @@ const Footer = () => {
         setIsLoading(true)
         
         try {
-            const response = await fetch('http://localhost:5000/api/newsletter/subscribe', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/newsletter/subscribe`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ const Footer = () => {
                      <Link to='/' className="mb-1">
                         <img 
                             className="w-[140px] sm:w-[150px] h-auto" 
-                            src="http://localhost:3000/images/logo_diayalf.svg" 
+                            src="/images/logo_diayalf.svg" 
                             alt="logo"
                         />
                         </Link>

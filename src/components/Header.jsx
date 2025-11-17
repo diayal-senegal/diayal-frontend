@@ -78,7 +78,7 @@ const Header = () => {
           <div className='flex items-center gap-3 flex-wrap'>
             <Link to='/'>
               <img
-                src="http://localhost:3000/images/logo_diayal.svg"
+                src="/images/logo_diayal.svg"
                 alt="Logo Diayal"
                 className='h-16 sm:h-20'
               />

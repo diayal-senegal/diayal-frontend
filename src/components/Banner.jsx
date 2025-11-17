@@ -52,7 +52,7 @@ const Banner = () => {
         
         // Écouter les messages du dashboard
         const handleMessage = (event) => {
-            if (event.origin === 'http://localhost:3001' && event.data.type === 'SYNC_BANNERS') {
+            if (event.data.type === 'SYNC_BANNERS') {
                 setBanners(event.data.banners);
                 localStorage.setItem('frontendBanners', JSON.stringify(event.data.banners));
                 console.log('Bannières synchronisées depuis dashboard:', event.data.banners.length);

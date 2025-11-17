@@ -13,7 +13,7 @@ const PaymentSimulator = ({ price, orderId }) => {
             console.log('Confirmation commande:', orderId);
             
             // Confirmer la commande côté backend
-            const response = await axios.get(`http://localhost:5000/api/order/confirm/${orderId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/order/confirm/${orderId}`);
             console.log('Réponse confirmation:', response.data);
             
             // Simulation d'un paiement réussi
