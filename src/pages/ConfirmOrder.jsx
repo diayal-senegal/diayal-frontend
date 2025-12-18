@@ -5,6 +5,7 @@ import success from '../assets/success.png'
 import { Link } from 'react-router-dom';
 import { FadeLoader } from 'react-spinners';
 import axios from 'axios';
+import { useNotifications } from '../utils/useNotifications';
 
 const load = async () => {
     return await loadStripe('pk_test_51S7hTsK3MSlTVRqWi9rfhHclg7spWcAgxa8OBWhV2S8AqvG1BNB5KUZehtTjKv9aQl86BCGrPIgy5gz3himUgJej00kOiGCDmE')
@@ -15,6 +16,7 @@ const ConfirmOrder = () => {
     const [loader, setLoader] = useState(true)
     const [stripe, setStripe] = useState('')
     const [message, setMessage] = useState(null)
+    const { sendOrderNotification } = useNotifications()
 
     useEffect(() => {
         // Vérifier d'abord si c'est un retour Mobile Money (simulation)
