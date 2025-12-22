@@ -121,7 +121,7 @@ const Banner = () => {
     return (
         <div className="relative w-full">
             {/* Container principal avec hauteur fixe comme panier/shipping */}
-            <div className="relative w-full h-[590px] sm:h-[400px] md:h-[450px] lg:h-[420px]">
+            <div className="relative w-full h-[390px] sm:h-[180px] md:h-[200px] lg:h-[220px]">
                 <div 
                     className="absolute inset-0 bg-contain bg-no-repeat bg-center overflow-hidden cursor-pointer group"
                     onClick={() => handleBannerClick(banner)}
@@ -133,19 +133,9 @@ const Banner = () => {
                     {/* Contenu en haut à gauche */}
                     <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
                         <div className="flex flex-col justify-start gap-1 items-start h-full w-full text-black pt-6">
-                            <h2 className="text-2xl sm:text-xl md:text-2xl lg:text-3xl font-bold text-left">Boutique de {banner.sellerName}</h2>
+                            {/* <h2 className="text-2xl sm:text-xl md:text-2xl lg:text-3xl font-bold text-left">Boutique de {banner.sellerName}</h2> */}
                             <div className="flex flex-col sm:flex-row justify-start items-start gap-2 text-sm sm:text-base lg:text-lg">
-                                <span className={`px-3 py-1 rounded-full text-sm font-bold ${
-                                    // banner.bannerType === 'vip' ? 'bg-purple-600' :
-                                    // banner.bannerType === 'premium' ? 'bg-blue-600' :
-                                    'bg-gray-600'
-                                }`}>
-                                    {/* {banner.bannerType === 'vip' ? '👑 VIP' :
-                                     banner.bannerType === 'premium' ? '⭐ PREMIUM' :
-                                     '🏷️ GRATUIT'} */}
-                                </span>
-                                {/* <span></span> */}
-                                {/* <span>Cliquez pour visiter la boutique</span> */}
+                                {/* Contenu supprimé pour éviter le trait gris */}
                             </div>
                         </div>
                     </div>
