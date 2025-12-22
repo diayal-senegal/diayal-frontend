@@ -210,8 +210,8 @@ export const homeReducer = createSlice({
        topRated_product : [], 
        discount_product : [],
        priceRange : {
-        low : 0,
-        high : 100
+        low : 1000,
+        high : 50000
        },
        product: {},
        relatedProducts : [],

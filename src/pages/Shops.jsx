@@ -103,7 +103,7 @@ const Shops = () => {
                   </div>
               <div className='w-full flex flex-wrap'>
                 <div className={`w-3/12 md-lg:w-4/12 md:w-full pr-8 ${filter ? 'md:h-0 md:overflow-hidden md:mb-6' : 'md:h-auto md:overflow-auto md:mb-0'}`}>
-                   <h2 className='text-3xl font-bold mb-3 text-slate-600'>Catégories</h2>
+                   <h2 className='text-2xl font-bold mb-3 text-slate-600'>Catégories</h2>
 
                     <div className='py-2'>
                        {
@@ -116,7 +116,7 @@ const Shops = () => {
                        }
                     </div>
                <div className='py-2 flex flex-col gap-5'>
-                  <h2 className='text-3xl font-bold mb-3 text-slate-600'>Prix</h2>
+                  <h2 className='text-2xl font-bold mb-3 text-slate-600'>Prix</h2>
                   <Range
                     step={5}
                     min={priceRange.low}
@@ -124,7 +124,7 @@ const Shops = () => {
                     values={(state.values)}
                     onChange={(values) => setState({values})}
                     renderTrack={({ props, children }) => (
-                        <div {...props} className='w-full h-[6px] bg-slate-200 rounded-full cursor-pointer'>
+                        <div {...props} className='w-full h-[6px] bg-slate-200 rounded-full cursor-pointer ml-2 md:ml-0'>
                         {children}
                         </div>
                     )}
@@ -133,11 +133,11 @@ const Shops = () => {
                     )}
                   />
                <div>
-               <span className='text-slate-800 font-bold text-lg'>{Math.floor(state.values[0]) }FCFA - {Math.floor(state.values[1])} FCFA</span>
+               <span className='text-slate-800 font-bold text-lg'>{Math.floor(state.values[0]) } FCFA - {Math.floor(state.values[1])} FCFA</span>
                 </div>
               </div>  
                    <div className='py-3 flex flex-col gap-4'>
-                     <h2 className='text-3xl font-bold mb-3 text-slate-600'>Articles selon les notes</h2>
+                     <h2 className='text-2xl font-bold mb-3 text-slate-600'>Articles selon les notes</h2>
                        <div className='flex flex-col gap-3'>
                            <div onClick={() => setRating(5)} className='text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer'>
                               <span><AiFillStar/></span>
