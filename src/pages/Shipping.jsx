@@ -7,6 +7,7 @@ import { FaHome } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { place_order } from '../store/reducers/orderReducer';
 import ShippingCalculator from '../components/ShippingCalculator';
+import toast from 'react-hot-toast';
 
 const Shipping = () => {
 
@@ -72,6 +73,11 @@ const Shipping = () => {
     }
 
     const placeOrder = () => {
+        if (!userInfo) {
+            toast.error("Veuillez créer un compte ou vous connecter pour finaliser votre commande");
+            return;
+        }
+        
         dispatch(place_order({ 
           price: totalPrice, 
           products, 

@@ -21,6 +21,7 @@ const FeatureProducts = ({ products }) => {
         productId: id
       }));
     } else {
+      toast.error('Veuillez créer un compte ou vous connecter pour ajouter des articles au panier');
       navigate('/login');
     }
   };
@@ -37,16 +38,21 @@ const FeatureProducts = ({ products }) => {
   }, [successMessage, errorMessage, dispatch]);
 
   const add_wishlist = (pro) => {
-    dispatch(add_to_wishlist({
-      userId: userInfo.id,
-      productId: pro._id,
-      name: pro.name,
-      price: pro.price,
-      images: pro.images[0],
-      discount: pro.discount,
-      rating: pro.rating,
-      slug: pro.slug
-    }));
+    if (userInfo) {
+      dispatch(add_to_wishlist({
+        userId: userInfo.id,
+        productId: pro._id,
+        name: pro.name,
+        price: pro.price,
+        images: pro.images[0],
+        discount: pro.discount,
+        rating: pro.rating,
+        slug: pro.slug
+      }));
+    } else {
+      toast.error('Veuillez créer un compte ou vous connecter pour ajouter des articles aux favoris');
+      navigate('/login');
+    }
   };
 
   return (

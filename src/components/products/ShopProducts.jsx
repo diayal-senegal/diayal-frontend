@@ -31,6 +31,8 @@ const ShopProducts = ({styles, products}) => {
                 quantity: 1,
                 productId: id
             }));
+        } else {
+            toast.error('Veuillez créer un compte ou vous connecter pour ajouter des articles au panier');
         }
     };
 

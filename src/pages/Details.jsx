@@ -104,6 +104,7 @@ const Details = () => {
               productId: product._id
             }));
           } else {
+            toast.error("Veuillez créer un compte ou vous connecter pour ajouter des articles au panier");
             navigate('/login');
           }
         };
@@ -121,6 +122,7 @@ const Details = () => {
               slug: product.slug
             }));
           }else{
+            toast.error("Veuillez créer un compte ou vous connecter pour ajouter des articles aux favoris");
             navigate('/login');
           }
             
