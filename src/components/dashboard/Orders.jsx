@@ -111,41 +111,111 @@ const Orders = () => {
                </div>
            </div>
 
-           {/* Tableau des commandes */}
+           {/* Tableau des commandes - Version Desktop */}
            <div className='bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden'>
                {myOrders && myOrders.length > 0 ? (
-                   <div className='overflow-x-auto'>
-                       <table className='w-full'>
-                           <thead className='bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200'>
-                               <tr>
-                                   <th className='px-6 py-4 text-left text-sm font-semibold text-gray-700'>Commande</th>
-                                   <th className='px-6 py-4 text-left text-sm font-semibold text-gray-700'>Prix</th>
-                                   <th className='px-6 py-4 text-left text-sm font-semibold text-gray-700'>Paiement</th>
-                                   <th className='px-6 py-4 text-left text-sm font-semibold text-gray-700'>Statut</th>
-                                   <th className='px-6 py-4 text-left text-sm font-semibold text-gray-700'>Actions</th>
-                               </tr>
-                           </thead>
-                           <tbody className='divide-y divide-gray-100'>
-                               {myOrders.map((o, i) => (
-                                   <tr key={i} className='hover:bg-gray-50 transition-colors duration-200'>
-                                       <td className='px-6 py-4'>
-                                           <div className='font-medium text-gray-900'>#{o._id.slice(-8)}</div>
-                                           <div className='text-sm text-gray-500'>ID: {o._id}</div>
-                                       </td>
-                                       <td className='px-6 py-4'>
-                                           <span className='font-semibold text-gray-900'>{o.price} FCFA</span>
-                                       </td>
-                                       <td className='px-6 py-4'>
-                                           <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                   <>
+                       {/* Version Desktop */}
+                       <div className='md-lg:hidden overflow-x-auto'>
+                           <table className='w-full'>
+                               <thead className='bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200'>
+                                   <tr>
+                                       <th className='px-6 py-4 text-left text-sm font-semibold text-gray-700'>Commande</th>
+                                       <th className='px-6 py-4 text-left text-sm font-semibold text-gray-700'>Prix</th>
+                                       <th className='px-6 py-4 text-left text-sm font-semibold text-gray-700'>Paiement</th>
+                                       <th className='px-6 py-4 text-left text-sm font-semibold text-gray-700'>Statut</th>
+                                       <th className='px-6 py-4 text-left text-sm font-semibold text-gray-700'>Actions</th>
+                                   </tr>
+                               </thead>
+                               <tbody className='divide-y divide-gray-100'>
+                                   {myOrders.map((o, i) => (
+                                       <tr key={i} className='hover:bg-gray-50 transition-colors duration-200'>
+                                           <td className='px-6 py-4'>
+                                               <div className='font-medium text-gray-900'>#{o._id.slice(-8)}</div>
+                                               <div className='text-sm text-gray-500'>ID: {o._id}</div>
+                                           </td>
+                                           <td className='px-6 py-4'>
+                                               <span className='font-semibold text-gray-900'>{o.price} FCFA</span>
+                                           </td>
+                                           <td className='px-6 py-4'>
+                                               <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                                                   o.payment_status === 'paid' 
+                                                       ? 'bg-green-100 text-green-800' 
+                                                       : 'bg-red-100 text-red-800'
+                                               }`}>
+                                                   {translatePaymentStatus(o.payment_status)}
+                                               </span>
+                                           </td>
+                                           <td className='px-6 py-4'>
+                                               <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                                                   o.delivery_status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                                                   o.delivery_status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                                   o.delivery_status === 'placed' ? 'bg-blue-100 text-blue-800' :
+                                                   o.delivery_status === 'processing' ? 'bg-indigo-100 text-indigo-800' :
+                                                   o.delivery_status === 'warehouse' ? 'bg-purple-100 text-purple-800' :
+                                                   o.delivery_status === 'shipping' ? 'bg-orange-100 text-orange-800' :
+                                                   o.delivery_status === 'delivered' ? 'bg-green-100 text-green-800' :
+                                                   'bg-gray-100 text-gray-800'
+                                               }`}>
+                                                   {translateDeliveryStatus(o.delivery_status)}
+                                               </span>
+                                           </td>
+                                           <td className='px-6 py-4'>
+                                               <div className='flex items-center gap-2'>
+                                                   <Link 
+                                                       to={`/dashboard/order/details/${o._id}`}
+                                                       className='inline-flex items-center gap-2 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200'
+                                                   >
+                                                       <FaEye className='text-xs' />
+                                                       Voir
+                                                   </Link>
+                                                   {o.payment_status !== 'paid' && (
+                                                       <button 
+                                                           onClick={() => redirect(o)} 
+                                                           className='inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-[#059473] to-[#047857] text-white text-sm font-medium rounded-lg hover:from-[#047857] hover:to-[#059473] transition-all duration-200 transform hover:scale-105'
+                                                       >
+                                                           <FaCreditCard className='text-xs' />
+                                                           Payer
+                                                       </button>
+                                                   )}
+                                               </div>
+                                           </td>
+                                       </tr>
+                                   ))}
+                               </tbody>
+                           </table>
+                       </div>
+
+                       {/* Version Mobile - Cartes */}
+                       <div className='md-lg:block hidden space-y-4 p-4'>
+                           {myOrders.map((o, i) => (
+                               <div key={i} className='bg-gray-50 rounded-lg p-4 border border-gray-200'>
+                                   {/* En-tête de la carte */}
+                                   <div className='flex justify-between items-start mb-3'>
+                                       <div>
+                                           <div className='font-bold text-gray-900 text-lg'>#{o._id.slice(-8)}</div>
+                                           <div className='text-xs text-gray-500 mt-1'>ID: {o._id}</div>
+                                       </div>
+                                       <div className='text-right'>
+                                           <div className='font-bold text-lg text-[#059473]'>{o.price} FCFA</div>
+                                       </div>
+                                   </div>
+
+                                   {/* Statuts */}
+                                   <div className='flex flex-wrap gap-2 mb-4'>
+                                       <div className='flex items-center gap-2'>
+                                           <span className='text-sm font-medium text-gray-600'>Paiement:</span>
+                                           <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                                                o.payment_status === 'paid' 
                                                    ? 'bg-green-100 text-green-800' 
                                                    : 'bg-red-100 text-red-800'
                                            }`}>
                                                {translatePaymentStatus(o.payment_status)}
                                            </span>
-                                       </td>
-                                       <td className='px-6 py-4'>
-                                           <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                                       </div>
+                                       <div className='flex items-center gap-2'>
+                                           <span className='text-sm font-medium text-gray-600'>Statut:</span>
+                                           <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                                                o.delivery_status === 'cancelled' ? 'bg-red-100 text-red-800' :
                                                o.delivery_status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                                                o.delivery_status === 'placed' ? 'bg-blue-100 text-blue-800' :
@@ -157,32 +227,32 @@ const Orders = () => {
                                            }`}>
                                                {translateDeliveryStatus(o.delivery_status)}
                                            </span>
-                                       </td>
-                                       <td className='px-6 py-4'>
-                                           <div className='flex items-center gap-2'>
-                                               <Link 
-                                                   to={`/dashboard/order/details/${o._id}`}
-                                                   className='inline-flex items-center gap-2 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200'
-                                               >
-                                                   <FaEye className='text-xs' />
-                                                   Voir
-                                               </Link>
-                                               {o.payment_status !== 'paid' && (
-                                                   <button 
-                                                       onClick={() => redirect(o)} 
-                                                       className='inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-[#059473] to-[#047857] text-white text-sm font-medium rounded-lg hover:from-[#047857] hover:to-[#059473] transition-all duration-200 transform hover:scale-105'
-                                                   >
-                                                       <FaCreditCard className='text-xs' />
-                                                       Payer
-                                                   </button>
-                                               )}
-                                           </div>
-                                       </td>
-                                   </tr>
-                               ))}
-                           </tbody>
-                       </table>
-                   </div>
+                                       </div>
+                                   </div>
+
+                                   {/* Actions */}
+                                   <div className='flex flex-col sm:flex-row gap-2'>
+                                       <Link 
+                                           to={`/dashboard/order/details/${o._id}`}
+                                           className='flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200'
+                                       >
+                                           <FaEye className='text-xs' />
+                                           Voir les détails
+                                       </Link>
+                                       {o.payment_status !== 'paid' && (
+                                           <button 
+                                               onClick={() => redirect(o)} 
+                                               className='flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-[#059473] to-[#047857] text-white text-sm font-medium rounded-lg hover:from-[#047857] hover:to-[#059473] transition-all duration-200'
+                                           >
+                                               <FaCreditCard className='text-xs' />
+                                               Payer maintenant
+                                           </button>
+                                       )}
+                                   </div>
+                               </div>
+                           ))}
+                       </div>
+                   </>
                ) : (
                    <div className='text-center py-12'>
                        <div className='text-6xl mb-4'>📦</div>
