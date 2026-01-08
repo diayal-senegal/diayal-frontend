@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async'
+import { useEffect } from 'react'
 
 const SEO = ({ 
   title = 'Diayal - Marketplace Sénégalaise',
@@ -12,27 +12,55 @@ const SEO = ({
   const fullUrl = `${siteUrl}${url}`
   const fullImage = image.startsWith('http') ? image : `${siteUrl}${image}`
 
-  return (
-    <Helmet>
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
-      <link rel="canonical" href={fullUrl} />
-      
-      {/* Open Graph */}
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={fullImage} />
-      <meta property="og:url" content={fullUrl} />
-      <meta property="og:type" content={type} />
-      
-      {/* Twitter */}
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={fullImage} />
-      <meta name="twitter:url" content={fullUrl} />
-    </Helmet>
-  )
+  useEffect(() => {
+    // Title
+    document.title = title
+    
+    // Meta tags
+    const updateMeta = (name, content, property = false) => {
+      const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`
+      let meta = document.querySelector(selector)
+      if (!meta) {
+        meta = document.createElement('meta')
+        if (property) {
+          meta.setAttribute('property', name)
+        } else {
+          meta.setAttribute('name', name)
+        }
+        document.head.appendChild(meta)
+      }
+      meta.setAttribute('content', content)
+    }
+    
+    // Basic meta tags
+    updateMeta('description', description)
+    updateMeta('keywords', keywords)
+    
+    // Open Graph
+    updateMeta('og:title', title, true)
+    updateMeta('og:description', description, true)
+    updateMeta('og:image', fullImage, true)
+    updateMeta('og:url', fullUrl, true)
+    updateMeta('og:type', type, true)
+    
+    // Twitter
+    updateMeta('twitter:title', title)
+    updateMeta('twitter:description', description)
+    updateMeta('twitter:image', fullImage)
+    updateMeta('twitter:url', fullUrl)
+    
+    // Canonical link
+    let canonical = document.querySelector('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', fullUrl)
+    
+  }, [title, description, keywords, fullImage, fullUrl, type])
+
+  return null
 }
 
 export default SEO
