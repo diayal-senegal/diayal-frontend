@@ -13,4 +13,4 @@ Allow: /shops
 Allow: /products
 
 # Sitemap
-Sitemap: https://diayal.sn/sitemap.xml
+Sitemap: https://www.diayal.sn/sitemap.xml
