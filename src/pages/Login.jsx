@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
 import { FaFacebookF, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa6";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -47,6 +48,12 @@ useEffect(() => {
 }, [successMessage, errorMessage, dispatch, navigate, userInfo]);
     return (
         <div className='min-h-screen bg-gradient-to-br from-slate-50 to-slate-100'>
+            <SEO 
+                title="Connexion - Diayal | Accédez à votre compte"
+                description="Connectez-vous à votre compte Diayal pour accéder à vos commandes, votre wishlist et profiter d'une expérience personnalisée."
+                keywords="connexion Diayal, login, se connecter, compte client, espace personnel"
+                url="/login"
+            />
             {
                 loader && <div className='w-screen h-screen flex justify-center items-center fixed left-0 top-0 bg-[#38303033] z-[999]'>
                     <FadeLoader/>

@@ -1,30 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/images/favicon_diayal.svg" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/images/favicon_diayal.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
+    <meta name="theme-color" content="#f97316" />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Diayal - La marketplace sénégalaise pour acheter et vendre en ligne. Découvrez des milliers de produits locaux, mode, électronique, alimentation et plus encore au Sénégal." />
+    <meta name="keywords" content="marketplace Sénégal, e-commerce Sénégal, acheter en ligne Sénégal, vendre en ligne, Diayal, boutique en ligne Dakar, livraison Sénégal" />
+    <meta name="author" content="Diayal" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://diayal.sn" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://diayal.sn" />
+    <meta property="og:title" content="Diayal - Marketplace Sénégalaise" />
+    <meta property="og:description" content="La marketplace sénégalaise pour acheter et vendre en ligne. Découvrez des milliers de produits locaux au Sénégal." />
+    <meta property="og:image" content="https://diayal.sn/images/logo_diayal.svg" />
+    <meta property="og:locale" content="fr_SN" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://diayal.sn" />
+    <meta name="twitter:title" content="Diayal - Marketplace Sénégalaise" />
+    <meta name="twitter:description" content="La marketplace sénégalaise pour acheter et vendre en ligne. Découvrez des milliers de produits locaux au Sénégal." />
+    <meta name="twitter:image" content="https://diayal.sn/images/logo_diayal.svg" />
+    
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/images/favicon_diayal.svg" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JNZ37RCWGS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-JNZ37RCWGS');
+    </script>
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Diayal",
+      "url": "https://diayal.sn",
+      "description": "La marketplace sénégalaise pour acheter et vendre en ligne. Découvrez des milliers de produits locaux au Sénégal.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://diayal.sn/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Diayal",
+        "url": "https://diayal.sn",
+        "logo": "https://diayal.sn/images/logo_diayal.svg"
+      }
+    }
+    </script>
+    
+    <title>Diayal - Marketplace Sénégalaise</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

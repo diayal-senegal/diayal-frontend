@@ -1,6 +1,7 @@
 import React, { useState, useEffect  } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import { IoIosArrowForward } from "react-icons/io";
 import { Range } from 'react-range';
@@ -78,6 +79,12 @@ const Shops = () => {
     }
     return (
         <div>
+           <SEO 
+               title="Boutiques - Diayal | Découvrez nos vendeurs sénégalais"
+               description="Explorez les boutiques de nos vendeurs sénégalais sur Diayal. Filtrez par catégorie, prix et notes pour trouver les meilleurs produits locaux."
+               keywords="boutiques Sénégal, vendeurs locaux, produits sénégalais, shopping en ligne, Diayal shops"
+               url="/shops"
+           />
            <Header />
            <section className='bg-[url(http://localhost:3000/images/banner/diay.png)] bg-cover bg-no-repeat h-[390px] sm:h-[180px] md:h-[200px] lg:h-[220px] mt-6 relative bg-left'>
              <div className='absolute left-0 top-0 w-full h-full bg-[#2422228a]'>

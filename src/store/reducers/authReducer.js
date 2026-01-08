@@ -42,7 +42,7 @@ export const forgot_password = createAsyncThunk(
             const {data} = await api.post('/customer/forgot-password', { email })
             return fulfillWithValue(data)
         } catch (error) {
-            return rejectWithValue(error.response.data)
+            return rejectWithValue(error.response?.data || { error: 'Erreur mot de passe oublié' })
         }
     }
 )
@@ -55,7 +55,7 @@ export const reset_password = createAsyncThunk(
             const {data} = await api.post('/customer/reset-password', info)
             return fulfillWithValue(data)
         } catch (error) {
-            return rejectWithValue(error.response.data)
+            return rejectWithValue(error.response?.data || { error: 'Erreur réinitialisation' })
         }
     }
 )
@@ -97,7 +97,7 @@ export const authReducer = createSlice({
                   state.loader = true; 
                })
                .addCase(customer_register.rejected, (state, { payload }) => {
-                  state.errorMessage = payload.error; 
+                  state.errorMessage = payload?.error || 'Erreur d\'inscription'; 
                    state.loader = false; 
                })
                .addCase(customer_register.fulfilled, (state, { payload }) => {
@@ -111,7 +111,7 @@ export const authReducer = createSlice({
                   state.loader = true; 
                })
                .addCase(customer_login.rejected, (state, { payload }) => {
-                  state.errorMessage = payload.error; 
+                  state.errorMessage = payload?.error || 'Erreur de connexion'; 
                    state.loader = false; 
                })
                .addCase(customer_login.fulfilled, (state, { payload }) => {
@@ -125,7 +125,7 @@ export const authReducer = createSlice({
                   state.loader = true; 
                })
                .addCase(forgot_password.rejected, (state, { payload }) => {
-                  state.errorMessage = payload.error; 
+                  state.errorMessage = payload?.error || 'Erreur mot de passe oublié'; 
                    state.loader = false; 
                })
                .addCase(forgot_password.fulfilled, (state, { payload }) => {
@@ -137,7 +137,7 @@ export const authReducer = createSlice({
                   state.loader = true; 
                })
                .addCase(reset_password.rejected, (state, { payload }) => {
-                  state.errorMessage = payload.error; 
+                  state.errorMessage = payload?.error || 'Erreur réinitialisation'; 
                    state.loader = false; 
                })
                .addCase(reset_password.fulfilled, (state, { payload }) => {

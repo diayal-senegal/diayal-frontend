@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { FaFacebookF, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa6";
+import SEO from '../components/SEO';
+import { FaFacebookF, FaGoogle, FaEye, FaEyeSlash, FaCheck, FaXmark } from "react-icons/fa6";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { customer_register, messageClear } from '../store/reducers/authReducer';
+import { useCSRF } from '../hooks/useCSRF';
 import toast from 'react-hot-toast';
 import { FadeLoader } from 'react-spinners';
 
@@ -19,7 +21,28 @@ const Register = () => {
     })
     const [showPassword, setShowPassword] = useState(false)
 
+    // Validation du mot de passe
+    const validatePassword = (password) => {
+        const minLength = password.length >= 8;
+        const hasUpper = /[A-Z]/.test(password);
+        const hasLower = /[a-z]/.test(password);
+        const hasNumber = /\d/.test(password);
+        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        
+        return {
+            minLength,
+            hasUpper,
+            hasLower,
+            hasNumber,
+            hasSpecial,
+            isValid: minLength && hasUpper && hasLower && hasNumber && hasSpecial
+        };
+    };
+
+    const passwordValidation = validatePassword(state.password);
+
     const dispatch = useDispatch();
+    const csrfToken = useCSRF();
 
     const inputHandle = (e) => {
         setState({
@@ -30,6 +53,12 @@ const Register = () => {
 
     const register = (e) => {
         e.preventDefault();
+        
+        if (!passwordValidation.isValid) {
+            toast.error('Le mot de passe ne respecte pas les critères de sécurité');
+            return;
+        }
+        
         dispatch(customer_register(state))
     }
 
@@ -49,6 +78,12 @@ const Register = () => {
 
     return (
         <div className='min-h-screen bg-gradient-to-br from-slate-50 to-slate-100'>
+            <SEO 
+                title="Inscription - Diayal | Créez votre compte gratuitement"
+                description="Inscrivez-vous gratuitement sur Diayal et découvrez la marketplace sénégalaise. Accès à des milliers de produits locaux et livraison rapide."
+                keywords="inscription Diayal, créer compte, s'inscrire, nouveau client, compte gratuit"
+                url="/register"
+            />
             {
                 loader && <div className='w-screen h-screen flex justify-center items-center fixed left-0 top-0 bg-[#38303033] z-[999]'>
                     <FadeLoader/>
@@ -120,9 +155,44 @@ const Register = () => {
                                         {showPassword ? <FaEyeSlash className='text-lg' /> : <FaEye className='text-lg' />}
                                     </button>
                                 </div>
+                                
+                                {/* Validation en temps réel du mot de passe */}
+                                {state.password && (
+                                    <div className='mt-3 space-y-2'>
+                                        <div className='text-xs space-y-1'>
+                                            <div className={`flex items-center gap-2 ${
+                                                passwordValidation.minLength ? 'text-green-600' : 'text-red-500'
+                                            }`}>
+                                                {passwordValidation.minLength ? <FaCheck /> : <FaXmark />}
+                                                Au moins 8 caractères
+                                            </div>
+                                            <div className={`flex items-center gap-2 ${
+                                                passwordValidation.hasUpper && passwordValidation.hasLower ? 'text-green-600' : 'text-red-500'
+                                            }`}>
+                                                {passwordValidation.hasUpper && passwordValidation.hasLower ? <FaCheck /> : <FaXmark />}
+                                                Lettres majuscules et minuscules
+                                            </div>
+                                            <div className={`flex items-center gap-2 ${
+                                                passwordValidation.hasNumber ? 'text-green-600' : 'text-red-500'
+                                            }`}>
+                                                {passwordValidation.hasNumber ? <FaCheck /> : <FaXmark />}
+                                                Au moins un chiffre
+                                            </div>
+                                            <div className={`flex items-center gap-2 ${
+                                                passwordValidation.hasSpecial ? 'text-green-600' : 'text-red-500'
+                                            }`}>
+                                                {passwordValidation.hasSpecial ? <FaCheck /> : <FaXmark />}
+                                                Au moins un caractère spécial
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
-                            <button className='w-full py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition duration-200 transform hover:-translate-y-0.5'>
+                            <button 
+                                disabled={!passwordValidation.isValid && state.password}
+                                className='w-full py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition duration-200 transform hover:-translate-y-0.5 disabled:hover:transform-none'
+                            >
                                 S'inscrire
                             </button>
                         </form>
@@ -161,13 +231,13 @@ const Register = () => {
 
                         <div className='mt-6 pt-6 border-t border-gray-200'>
                             <div className='space-y-3'>
-                                <a target='_blank' href="http://localhost:3001/login" rel="noreferrer" className='block'>
+                                <a target='_blank' href={`${process.env.REACT_APP_SELLER_URL}/login`} rel="noreferrer" className='block'>
                                     <div className='w-full py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition duration-200 text-center'>
                                         Espace Vendeur
                                     </div>
                                 </a>
 
-                                <a target='_blank' href="http://localhost:3001/register" rel="noreferrer" className='block'>
+                                <a target='_blank' href={`${process.env.REACT_APP_SELLER_URL}/register`} rel="noreferrer" className='block'>
                                     <div className='w-full py-3 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition duration-200 text-center'>
                                         Devenir Vendeur
                                     </div>

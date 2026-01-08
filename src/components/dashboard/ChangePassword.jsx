@@ -1,16 +1,43 @@
 import React, { useState } from 'react';
-import { FaEye, FaEyeSlash, FaShieldAlt } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaShieldAlt, FaCheck, FaTimes } from 'react-icons/fa';
 import { RiLockPasswordLine } from 'react-icons/ri';
+import api from '../../api/api';
+import toast from 'react-hot-toast';
+
+// Configuration pour utiliser les cookies
+api.defaults.withCredentials = true;
 
 const ChangePassword = () => {
     const [showOldPassword, setShowOldPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState({ type: '', text: '' });
     const [formData, setFormData] = useState({
         old_password: '',
         new_password: '',
         confirm_password: ''
     });
+
+    // Validation du mot de passe
+    const validatePassword = (password) => {
+        const minLength = password.length >= 8;
+        const hasUpper = /[A-Z]/.test(password);
+        const hasLower = /[a-z]/.test(password);
+        const hasNumber = /\d/.test(password);
+        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        
+        return {
+            minLength,
+            hasUpper,
+            hasLower,
+            hasNumber,
+            hasSpecial,
+            isValid: minLength && hasUpper && hasLower && hasNumber && hasSpecial
+        };
+    };
+
+    const passwordValidation = validatePassword(formData.new_password);
 
     const handleInputChange = (e) => {
         setFormData({
@@ -19,10 +46,39 @@ const ChangePassword = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Logique de soumission ici
-        console.log('Form submitted:', formData);
+        
+        if (!passwordValidation.isValid) {
+            toast.error('Le nouveau mot de passe ne respecte pas les critères de sécurité');
+            return;
+        }
+
+        setLoading(true);
+        setMessage({ type: '', text: '' });
+
+        try {
+            const response = await api.post('/customer/change-password', {
+                oldPassword: formData.old_password,
+                newPassword: formData.new_password
+            });
+
+            toast.success(response.data.message || 'Mot de passe changé avec succès!');
+            setFormData({ old_password: '', new_password: '', confirm_password: '' });
+            setMessage({ type: 'success', text: response.data.message || 'Mot de passe changé avec succès!' });
+            
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Erreur changement mot de passe:', error);
+            const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Erreur lors du changement de mot de passe';
+            toast.error(errorMessage);
+            setMessage({ type: 'error', text: errorMessage });
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -56,6 +112,17 @@ const ChangePassword = () => {
                             </div>
                         </div>
                     </div>
+
+                    {/* Message de statut */}
+                    {message.text && (
+                        <div className={`p-4 rounded-lg mb-4 ${
+                            message.type === 'success' 
+                                ? 'bg-green-50 border border-green-200 text-green-800' 
+                                : 'bg-red-50 border border-red-200 text-red-800'
+                        }`}>
+                            {message.text}
+                        </div>
+                    )}
 
                     <form onSubmit={handleSubmit} className='space-y-6'>
                         {/* Ancien mot de passe */}
@@ -108,6 +175,38 @@ const ChangePassword = () => {
                                     {showNewPassword ? <FaEyeSlash /> : <FaEye />}
                                 </button>
                             </div>
+                            
+                            {/* Validation en temps réel du mot de passe */}
+                            {formData.new_password && (
+                                <div className='mt-3 space-y-2'>
+                                    <div className='text-xs space-y-1'>
+                                        <div className={`flex items-center gap-2 ${
+                                            passwordValidation.minLength ? 'text-green-600' : 'text-red-500'
+                                        }`}>
+                                            {passwordValidation.minLength ? <FaCheck /> : <FaTimes />}
+                                            Au moins 8 caractères
+                                        </div>
+                                        <div className={`flex items-center gap-2 ${
+                                            passwordValidation.hasUpper && passwordValidation.hasLower ? 'text-green-600' : 'text-red-500'
+                                        }`}>
+                                            {passwordValidation.hasUpper && passwordValidation.hasLower ? <FaCheck /> : <FaTimes />}
+                                            Lettres majuscules et minuscules
+                                        </div>
+                                        <div className={`flex items-center gap-2 ${
+                                            passwordValidation.hasNumber ? 'text-green-600' : 'text-red-500'
+                                        }`}>
+                                            {passwordValidation.hasNumber ? <FaCheck /> : <FaTimes />}
+                                            Au moins un chiffre
+                                        </div>
+                                        <div className={`flex items-center gap-2 ${
+                                            passwordValidation.hasSpecial ? 'text-green-600' : 'text-red-500'
+                                        }`}>
+                                            {passwordValidation.hasSpecial ? <FaCheck /> : <FaTimes />}
+                                            Au moins un caractère spécial
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* Confirmer mot de passe */}
@@ -147,10 +246,10 @@ const ChangePassword = () => {
                         <div className='flex flex-col sm:flex-row gap-3 pt-4'>
                             <button 
                                 type="submit"
-                                disabled={!formData.old_password || !formData.new_password || formData.new_password !== formData.confirm_password}
+                                disabled={loading || !formData.old_password || !passwordValidation.isValid || formData.new_password !== formData.confirm_password}
                                 className='flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100'
                             >
-                                Changer le mot de passe
+                                {loading ? 'Changement en cours...' : 'Changer le mot de passe'}
                             </button>
                             <button 
                                 type="button"
