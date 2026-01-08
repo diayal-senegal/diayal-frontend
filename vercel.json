@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/sitemap.xml.js" },
     { "source": "/robots.txt", "destination": "/api/robots.txt.js" },
