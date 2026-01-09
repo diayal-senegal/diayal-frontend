@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "id": 1,
+    "image": "/images/banner/1.jpg",
+    "sellerName": "Diayal",
+    "clickAction": "shops",
+    "shopUrl": "/shops"
+  },
+  {
+    "id": 2,
+    "image": "/images/banner/2.jpg",
+    "sellerName": "Diayal",
+    "clickAction": "shops",
+    "shopUrl": "/shops"
+  },
+  {
+    "id": 3,
+    "image": "/images/banner/3.jpg",
+    "sellerName": "Diayal",
+    "clickAction": "shops",
+    "shopUrl": "/shops"
+  }
+]
