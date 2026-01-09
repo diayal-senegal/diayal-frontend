@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// Copier sitemap.xml, robots.txt et maintenance.html dans build
+// Copier sitemap.xml et robots.txt dans build
 const publicDir = path.join(__dirname, 'public');
 const buildDir = path.join(__dirname, 'build');
 
@@ -15,10 +15,12 @@ fs.copyFileSync(
   path.join(buildDir, 'robots.txt')
 );
 
-// REMPLACER index.html par maintenance.html pour activer la maintenance
-fs.copyFileSync(
-  path.join(publicDir, 'maintenance.html'),
-  path.join(buildDir, 'index.html')
-);
+console.log('✅ sitemap.xml et robots.txt copiés dans build/');
 
-console.log('✅ Mode maintenance activé : index.html remplacé par maintenance.html');
+// MODE MAINTENANCE DÉSACTIVÉ
+// Pour réactiver la maintenance, décommentez les lignes ci-dessous :
+// fs.copyFileSync(
+//   path.join(publicDir, 'maintenance.html'),
+//   path.join(buildDir, 'index.html')
+// );
+// console.log('🚧 Mode maintenance activé');
