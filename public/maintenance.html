@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Diayal — Nous préparons le lancement officiel. Inscription artisans ouverte." />
+  <title>Diayal — Bientôt de retour</title>
+
+  <!-- Perf hints -->
+  <link rel="preload" href="/images/logo_diayal.svg" as="image" />
+
+  <style>
+    :root{
+      --bg1:#F4FFFA;
+      --bg2:#E7F7F3;
+      --text:#1f2937;
+      --muted:#64748b;
+      --brand:#059473;
+      --brand2:#047857;
+      --card:#ffffff;
+      --ring: rgba(5,148,115,.25);
+      --shadow: 0 24px 70px rgba(0,0,0,.12);
+      --shadow2: 0 12px 30px rgba(5,148,115,.20);
+      --radius: 22px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(900px 500px at 10% 10%, rgba(5,148,115,.10), transparent 60%),
+        radial-gradient(800px 400px at 90% 20%, rgba(4,120,87,.10), transparent 55%),
+        linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+      color: var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 24px;
+    }
+
+    .container{
+      width: min(900px, 100%);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(26px, 4vw, 56px);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(15, 23, 42, .06);
+      animation: enter .7s ease-out both;
+    }
+
+    .container::before{
+      content:"";
+      position:absolute;
+      inset:-120px -160px auto auto;
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle at 30% 30%, rgba(5,148,115,.18), transparent 60%);
+      transform: rotate(12deg);
+      pointer-events:none;
+    }
+
+    @keyframes enter{
+      from{opacity:0; transform: translateY(18px)}
+      to{opacity:1; transform: translateY(0)}
+    }
+
+    .top{
+      display:flex;
+      gap: 22px;
+      align-items:center;
+      justify-content:center;
+      flex-direction: column;
+      text-align:center;
+    }
+
+    .logo{
+      width: 170px;
+      height:auto;
+      filter: drop-shadow(0 10px 22px rgba(0,0,0,.10));
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse{
+      0%,100%{transform: scale(1)}
+      50%{transform: scale(1.03)}
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(5,148,115,.08);
+      color: var(--brand2);
+      font-weight: 700;
+      letter-spacing: .2px;
+      border: 1px solid rgba(5,148,115,.18);
+    }
+
+    .dot{
+      width:10px;height:10px;border-radius:999px;background: var(--brand);
+      box-shadow: 0 0 0 6px rgba(5,148,115,.14);
+    }
+
+    h1{
+      font-size: clamp(1.6rem, 2.8vw, 2.35rem);
+      line-height:1.15;
+      margin-top: 6px;
+      font-weight: 800;
+      letter-spacing: -.4px;
+    }
+
+    .subtitle{
+      color: var(--muted);
+      font-size: clamp(1rem, 1.5vw, 1.1rem);
+      line-height: 1.7;
+      max-width: 680px;
+      margin-top: 10px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 26px;
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(2,6,23,.02), rgba(2,6,23,0));
+      border: 1px solid rgba(15,23,42,.08);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .panel strong{color: var(--text)}
+    .panel p{
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    .actions{
+      margin-top: 22px;
+      display:flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content:center;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      text-decoration:none;
+      border: 1px solid transparent;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+      will-change: transform;
+    }
+
+    .btn-primary{
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand2) 100%);
+      color: #fff;
+      box-shadow: var(--shadow2);
+    }
+
+    .btn-primary:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(5,148,115,.30);
+    }
+
+    .btn-secondary{
+      background: #fff;
+      color: var(--text);
+      border-color: rgba(15,23,42,.12);
+    }
+
+    .btn-secondary:hover{
+      transform: translateY(-2px);
+      border-color: rgba(5,148,115,.35);
+      box-shadow: 0 12px 30px rgba(0,0,0,.10);
+    }
+
+    .small{
+      margin-top: 10px;
+      font-size: .95rem;
+      color: var(--muted);
+    }
+
+    .newsletter{
+      margin-top: 16px;
+      display:flex;
+      gap: 10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .input{
+      width: min(420px, 100%);
+      padding: 13px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,.12);
+      outline: none;
+      font-size: 1rem;
+      transition: box-shadow .2s ease, border-color .2s ease;
+    }
+
+    .input:focus{
+      border-color: rgba(5,148,115,.55);
+      box-shadow: 0 0 0 6px var(--ring);
+    }
+
+    .social-links{
+      display:flex;
+      justify-content:center;
+      gap: 14px;
+      margin-top: 26px;
+      flex-wrap:wrap;
+    }
+
+    .social-link{
+      width: 46px;
+      height: 46px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: #fff;
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: 0 8px 20px rgba(0,0,0,.08);
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+      text-decoration:none;
+    }
+    .social-link:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.12);
+      border-color: rgba(15,23,42,.18);
+    }
+
+    .social-link.facebook{color:#1877f2}
+    .social-link.facebook:hover{background:#1877f2;color:#fff}
+    .social-link.instagram{color:#e4405f}
+    .social-link.instagram:hover{background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); color:#fff}
+    .social-link.tiktok{color:#111}
+    .social-link.tiktok:hover{background:#111;color:#fff}
+    .social-link.twitter{color:#1da1f2}
+    .social-link.twitter:hover{background:#1da1f2;color:#fff}
+
+    .social-link svg{width:22px;height:22px}
+
+    .contact-info{
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px dashed rgba(15,23,42,.14);
+      color: var(--muted);
+      font-size: .95rem;
+      text-align:center;
+    }
+
+    .contact-info a{
+      color: var(--brand2);
+      text-decoration:none;
+      font-weight: 800;
+    }
+    .contact-info a:hover{text-decoration: underline}
+
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important; transition:none !important}
+    }
+
+    @media (min-width: 820px){
+      .grid{
+        grid-template-columns: 1fr 1fr;
+      }
+      .top{flex-direction: column;}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container" role="main">
+    <section class="top" aria-label="Maintenance Diayal">
+      <img src="/images/logo_diayal.svg" alt="Logo Diayal" class="logo" />
+
+      <div class="badge" aria-label="Statut du site">
+        <span class="dot" aria-hidden="true"></span>
+        Lancement en préparation — accès public temporairement fermé
+      </div>
+
+      <h1>On revient très bientôt 😉</h1>
+
+      <p class="subtitle">
+        Diayal se refait une beauté pour le lancement officiel.
+        On finalise les dernières fonctionnalités et on sécurise tout (oui, même les petits détails qui cassent la prod à 2h du matin).
+      </p>
+    </section>
+
+    <section class="grid" aria-label="Informations">
+      <div class="panel">
+        <strong>✨ Artisans : inscriptions ouvertes</strong>
+        <p>
+          Vous êtes artisan(e) ? Inscrivez-vous maintenant.
+          On vous contacte ensuite pour vous guider sur la mise en ligne de vos créations et la préparation du lancement.
+        </p>
+      </div>
+
+      <div class="panel">
+        <strong>📣 Restez informé(e)</strong>
+        <p>
+          Vous voulez être prévenu(e) dès l'ouverture officielle ?
+          Laissez votre email (ou suivez-nous sur les réseaux). Promis : pas de spam, on n'a déjà pas le temps.
+        </p>
+
+        <form class="newsletter" action="#" method="post" onsubmit="return false;">
+          <input class="input" type="email" name="email" placeholder="Votre email (optionnel)" autocomplete="email" />
+          <button class="btn btn-secondary" type="submit" aria-label="S'inscrire à la newsletter">
+            🔔 Me prévenir
+          </button>
+        </form>
+
+        <p class="small">Astuce : branche ce bouton sur Brevo / ton endpoint quand tu veux.</p>
+      </div>
+    </section>
+
+    <section class="actions" aria-label="Actions principales">
+      <a class="btn btn-primary" href="https://inscription.diayal.sn" rel="noopener noreferrer">
+        ✨ Inscription Artisans
+      </a>
+
+      <a class="btn btn-secondary" href="https://www.diayal.sn" rel="noopener noreferrer">
+        🎬 Voir le teaser
+      </a>
+    </section>
+
+    <section class="social-links" aria-label="Réseaux sociaux">
+      <a href="https://www.facebook.com/profile.php?id=61582393357735&locale=fr_FR" class="social-link facebook" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="currentColor">
+          <path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/>
+        </svg>
+      </a>
+
+      <a href="https://www.instagram.com/diayal_officiel/" class="social-link instagram" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
+          <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+        </svg>
+      </a>
+
+      <a href="https://www.tiktok.com/@diayal1?lang=fr" class="social-link tiktok" target="_blank" rel="noopener noreferrer" title="TikTok" aria-label="TikTok">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
+          <path d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 1.9 22.2h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.1z"/>
+        </svg>
+      </a>
+
+      <a href="https://x.com/Diayal_officiel" class="social-link twitter" target="_blank" rel="noopener noreferrer" title="X" aria-label="X">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+          <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/>
+        </svg>
+      </a>
+    </section>
+
+    <footer class="contact-info" aria-label="Contact">
+      <p><strong>Besoin d'aide ?</strong> On répond vite (sauf si on est en train de déployer… là on répond très vite mais après 😄).</p>
+      <p>
+        📧 <a href="mailto:support@diayal.sn">support@diayal.sn</a>
+        &nbsp;|&nbsp;
+        📱 <a href="https://wa.me/221773385468" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>
