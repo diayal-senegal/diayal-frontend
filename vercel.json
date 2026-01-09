@@ -1,16 +1,5 @@
 {
-  "routes": [
-    { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
-    { "src": "/robots.txt", "dest": "/robots.txt" },
-    { "src": "/(.*)", "dest": "/maintenance.html", "status": 503 }
-  ],
-  "headers": [
-    {
-      "source": "/maintenance.html",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
-        { "key": "Retry-After", "value": "3600" }
-      ]
-    }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/maintenance.html" }
   ]
 }
