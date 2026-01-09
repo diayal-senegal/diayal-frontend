@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// Copier sitemap.xml et robots.txt dans build
+// Copier sitemap.xml, robots.txt et maintenance.html dans build
 const publicDir = path.join(__dirname, 'public');
 const buildDir = path.join(__dirname, 'build');
 
@@ -15,4 +15,9 @@ fs.copyFileSync(
   path.join(buildDir, 'robots.txt')
 );
 
-console.log('✅ sitemap.xml et robots.txt copiés dans build/');
+fs.copyFileSync(
+  path.join(publicDir, 'maintenance.html'),
+  path.join(buildDir, 'maintenance.html')
+);
+
+console.log('✅ sitemap.xml, robots.txt et maintenance.html copiés dans build/');
