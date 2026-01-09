@@ -17,10 +17,9 @@ fs.copyFileSync(
 
 console.log('✅ sitemap.xml et robots.txt copiés dans build/');
 
-// MODE MAINTENANCE DÉSACTIVÉ
-// Pour réactiver la maintenance, décommentez les lignes ci-dessous :
-// fs.copyFileSync(
-//   path.join(publicDir, 'maintenance.html'),
-//   path.join(buildDir, 'index.html')
-// );
-// console.log('🚧 Mode maintenance activé');
+// MODE MAINTENANCE ACTIVÉ
+fs.copyFileSync(
+  path.join(publicDir, 'maintenance.html'),
+  path.join(buildDir, 'index.html')
+);
+console.log('🚧 Mode maintenance activé : index.html remplacé par maintenance.html');
