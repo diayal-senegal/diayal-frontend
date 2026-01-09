@@ -15,9 +15,10 @@ fs.copyFileSync(
   path.join(buildDir, 'robots.txt')
 );
 
+// REMPLACER index.html par maintenance.html pour activer la maintenance
 fs.copyFileSync(
   path.join(publicDir, 'maintenance.html'),
-  path.join(buildDir, 'maintenance.html')
+  path.join(buildDir, 'index.html')
 );
 
-console.log('✅ sitemap.xml, robots.txt et maintenance.html copiés dans build/');
+console.log('✅ Mode maintenance activé : index.html remplacé par maintenance.html');
