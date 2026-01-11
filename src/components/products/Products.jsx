@@ -65,7 +65,14 @@ const Products = ({title,products}) => {
                      {
                         p.map((pl, j) =>
                         <Link key={j} className='flex justify-start items-start' to={`/product/details/${pl.slug}`}>
+                        <div className='relative'>
                         <img className='w-[110px] h-[110px]' src={pl.images[0]} alt="" />
+                        {pl.isUniqueItem && (
+                          <span className='absolute top-1 left-1 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm z-10'>
+                            PIÈCE UNIQUE
+                          </span>
+                        )}
+                        </div>
                         <div className='px-3 flex justify-start items-start gap-1 flex-col text-slate-600'>
                         <h2>{pl.name}</h2>
                         <span className='text-lg font-bold'>{pl.price} F</span>

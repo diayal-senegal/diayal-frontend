@@ -196,10 +196,15 @@ const Details = () => {
               <div className='w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] mx-auto h-full '>
                  <div className='grid grid-cols-2 md-lg:grid-cols-1 gap-8'>
                  <div>
-                    <div className='p-5 border'>
-                       <img className='h-[400px] w-full' src={image ?  image : product.images?.[0]} alt="" />
+                    <div className='p-5 border relative flex justify-center items-center bg-white'>
+                       <img className='h-[400px] w-auto max-w-full object-contain' src={image ?  image : product.images?.[0]} alt="" />
+                       {product.isUniqueItem && (
+                         <span className='absolute top-8 right-8 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-bold px-3 py-2 rounded-md shadow-lg z-10'>
+                           PIÈCE UNIQUE
+                         </span>
+                       )}
                     </div>
-                    <div className='py-3 '>
+                    <div className='py-3'>
                        {
                          product.images && <Carousel
                                           autoPlay={true}
@@ -208,13 +213,14 @@ const Details = () => {
                                           arrows={true}
                                           responsive={responsive}
                                           transitionDuration={500}
+                                          partialVisible={false}
                                           
                                           >
                                           {
                                             product.images.map((img, i) => {
                                               return (
-                                                <div key={i} onClick={() => setImage(img)}>
-                                                <img className='h-[120px] cursor-pointer ' src={img} alt="" />
+                                                <div key={i} onClick={() => setImage(img)} className='px-0'>
+                                                <img className='h-[120px] cursor-pointer object-contain' src={img} alt="" />
                                                 </div>
                                               )
                                             })
