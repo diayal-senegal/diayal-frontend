@@ -14,7 +14,7 @@ const Card = () => {
     const {userInfo} = useSelector(state => state.auth)
     const {card_products, successMessage, price, buy_product_item, shipping_fee, outOfStock_products } = useSelector(state => state.card)
     const [shippingInfo, setShippingInfo] = useState({
-        totalShipping: shipping_fee,
+        totalShipping: 0,
         hasPromotion: false,
         promotionMessages: [],
         savings: 0
@@ -282,7 +282,7 @@ const dec = (quantity, card_id) => {
                         </div>
                         <div className='flex justify-between items-center '>
                             <span>Total</span>
-                            <span className='text-lg text-[#059473]'>{price + shippingInfo.totalShipping} FCFA</span>
+                            <span className='text-lg text-[#059473]'>{price + (shippingInfo.totalShipping || 0)} FCFA</span>
                         </div>
                         <button onClick={redirect} className='px-5 py-[6px] bg-[#059473] hover:shadow-red-500/50 hover:shadow-lg 
                          text-white uppercase font-semibold rounded-sm'>
