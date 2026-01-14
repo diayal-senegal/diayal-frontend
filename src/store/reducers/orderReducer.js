@@ -62,6 +62,19 @@ export const get_order_details = createAsyncThunk(
 )
 //End Method
 
+export const delete_order = createAsyncThunk(
+    'order/delete_order',
+    async(orderId, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const {data} = await api.delete(`/home/customer/delete-order/${orderId}`)
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+//End Method
+
 
 export const orderReducer = createSlice({
     name: 'order',
@@ -91,6 +104,12 @@ export const orderReducer = createSlice({
     })
     .addCase(get_order_details.fulfilled, (state, { payload }) => {
       state.myOrder = payload.order;
+    })
+    .addCase(delete_order.fulfilled, (state, { payload }) => {
+      state.successMessage = payload.message || 'Commande supprimée avec succès';
+    })
+    .addCase(delete_order.rejected, (state, { payload }) => {
+      state.errorMessage = payload?.message || 'Erreur lors de la suppression';
     })
 
       // .addCase(place_order.rejected, (state, { payload }) => {

@@ -65,23 +65,45 @@ const ShippingCalculator = ({ cartItems, onShippingUpdate }) => {
         dispatch(setCustomerRegion(customerRegion));
     }, [customerRegion, dispatch]);
 
-    // Calculate shipping PER SELLER
+    // Calculate shipping PER SELLER (only once or when region changes)
+    const [calculatedSellers, setCalculatedSellers] = useState(new Set());
+
     useEffect(() => {
         const sellerIds = Object.keys(sellerTotals);
         if (sellerIds.length === 0) return;
 
         sellerIds.forEach((sellerId) => {
-            dispatch(calculate_shipping({
-                sellerId,
-                orderAmount: sellerTotals[sellerId],
-                customerRegion
-            }));
+            const key = `${sellerId}-${customerRegion}-${sellerTotals[sellerId]}`;
+            if (!calculatedSellers.has(key)) {
+                console.log('🚚 Calcul livraison pour:', {
+                    sellerId,
+                    shopName: groupedBySeller[sellerId]?.shopName,
+                    orderAmount: sellerTotals[sellerId],
+                    customerRegion
+                });
+                dispatch(calculate_shipping({
+                    sellerId,
+                    orderAmount: sellerTotals[sellerId],
+                    customerRegion
+                }));
+                setCalculatedSellers(prev => new Set([...prev, key]));
+            }
         });
-    }, [customerRegion, sellerTotals, dispatch]);
+    }, [customerRegion, sellerTotals, dispatch, calculatedSellers, groupedBySeller]);
+
+    // Reset calculated sellers when region changes
+    useEffect(() => {
+        setCalculatedSellers(new Set());
+    }, [customerRegion]);
 
     // Notify parent
     useEffect(() => {
         if (!onShippingUpdateRef.current) return;
+        console.log('📦 Mise à jour shipping info:', {
+            totalShipping,
+            shippingBySeller,
+            customerRegion
+        });
         onShippingUpdateRef.current({
             totalShipping,
             shippingBySeller,
@@ -121,25 +143,44 @@ const ShippingCalculator = ({ cartItems, onShippingUpdate }) => {
                     sellerIds.map((sellerId) => {
                         const sellerShipping = shippingBySeller?.[sellerId];
                         const cost = sellerShipping?.shippingCost;
+                        const isFree = sellerShipping?.freeShipping;
+                        const promoMessage = sellerShipping?.promotionMessage;
+                        const originalCost = sellerShipping?.originalShippingCost;
                         const sellerAmount = sellerTotals?.[sellerId] || 0;
                         const shopName = groupedBySeller[sellerId]?.shopName || 'Vendeur';
 
                         return (
                             <div key={sellerId} className="flex items-center justify-between rounded-md border p-3">
-                                <div>
+                                <div className="flex-1">
                                     <div className="text-sm font-semibold text-gray-900">
                                         {shopName}
                                     </div>
                                     <div className="text-xs text-gray-500">
                                         Montant: {sellerAmount.toLocaleString('fr-FR')} F
                                     </div>
+                                    {isFree && promoMessage && (
+                                        <div className="text-xs text-green-600 mt-1">
+                                            🎉 {promoMessage}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="text-right">
                                     <div className="text-sm text-gray-600">Livraison</div>
-                                    <div className="font-semibold text-gray-900">
-                                        {loader && (cost === undefined || cost === null) ? 'Calcul…' : `${(cost ?? 0).toLocaleString('fr-FR')} F`}
-                                    </div>
+                                    {isFree ? (
+                                        <div>
+                                            <div className="font-semibold text-green-600">GRATUIT</div>
+                                            {originalCost > 0 && (
+                                                <div className="text-xs text-gray-400 line-through">
+                                                    {originalCost.toLocaleString('fr-FR')} F
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="font-semibold text-gray-900">
+                                            {loader && (cost === undefined || cost === null) ? 'Calcul…' : `${(cost ?? 0).toLocaleString('fr-FR')} F`}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         );

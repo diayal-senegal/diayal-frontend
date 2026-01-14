@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { get_orders } from '../../store/reducers/orderReducer';
-import { FaBorderAll, FaEye, FaCreditCard, FaFilter } from 'react-icons/fa';
+import { get_orders, delete_order, messageClear } from '../../store/reducers/orderReducer';
+import { FaBorderAll, FaEye, FaCreditCard, FaFilter, FaTrash } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 const Orders = () => {
     const [state, setState] = useState('all');
@@ -31,7 +32,7 @@ const Orders = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {userInfo} = useSelector(state => state.auth)
-    const { myOrders } = useSelector(state => state.order)
+    const { myOrders, successMessage, errorMessage } = useSelector(state => state.order)
 
       const fetchOrders = () => {
         if (userInfo && userInfo.id) {
@@ -69,6 +70,24 @@ const Orders = () => {
         orderId: ord._id
       }})
   }
+
+  const handleDeleteOrder = (orderId) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cette commande ?')) {
+      dispatch(delete_order(orderId))
+    }
+  }
+
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage)
+      dispatch(messageClear())
+      fetchOrders()
+    }
+    if (errorMessage) {
+      toast.error(errorMessage)
+      dispatch(messageClear())
+    }
+  }, [successMessage, errorMessage])
 
     return (
         <div className='w-full'>
@@ -178,6 +197,13 @@ const Orders = () => {
                                                            Payer
                                                        </button>
                                                    )}
+                                                   <button 
+                                                       onClick={() => handleDeleteOrder(o._id)}
+                                                       className='p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded transition-colors duration-200'
+                                                       title='Supprimer'
+                                                   >
+                                                       <FaTrash className='text-base' />
+                                                   </button>
                                                </div>
                                            </td>
                                        </tr>
@@ -248,6 +274,13 @@ const Orders = () => {
                                                Payer maintenant
                                            </button>
                                        )}
+                                       <button 
+                                           onClick={() => handleDeleteOrder(o._id)}
+                                           className='p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded transition-colors duration-200'
+                                           title='Supprimer'
+                                       >
+                                           <FaTrash className='text-base' />
+                                       </button>
                                    </div>
                                </div>
                            ))}
