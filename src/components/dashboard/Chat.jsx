@@ -8,14 +8,10 @@ import { add_friend, send_message, updateMessage, messageClear } from '../../sto
 import toast from 'react-hot-toast';
 import { FaList, FaComments } from 'react-icons/fa'
 import io from 'socket.io-client';
+import Avatar from '../Avatar';
 
 
 const socket = io('http://localhost:5000');
-
-const getProfileImage = (image) => {
-  if (!image) return "http://localhost:3001/images/user.png";
-  return image.startsWith('http') ? image : `http://localhost:3001/${image}`;
-};
 
 const Chat = () => {
 
@@ -29,6 +25,17 @@ const Chat = () => {
     const [receverMessage,setReceverMessage] = useState('')
     const [activeSeller,setActiveSeller] = useState([])
     const [show, setShow] = useState(false)
+    
+    // Fonction pour vérifier si un vendeur est en ligne
+    const isSellerOnline = (sellerId) => {
+        if (!sellerId || !activeSeller || activeSeller.length === 0) return false;
+        return activeSeller.some(s => {
+            // Vérifier toutes les possibilités
+            return s.sellerId === sellerId || 
+                   s._id === sellerId || 
+                   (s.userInfo && s.userInfo._id === sellerId);
+        });
+    };
     
     useEffect(() => {
         socket.emit('add_user',userInfo.id, userInfo)
@@ -58,6 +65,9 @@ const Chat = () => {
             setReceverMessage(msg)
         })
         socket.on('activeSeller', (sellers) => {
+            console.log('Active sellers received:', sellers)
+            console.log('Current friend fdId:', currentFd?.fdId)
+            console.log('My friends:', my_friends.map(f => ({ name: f.name, fdId: f.fdId })))
             setActiveSeller(sellers)
         })
     },[])
@@ -122,20 +132,17 @@ const Chat = () => {
                                                 currentFd?.fdId === f.fdId ? 'bg-blue-50 border-l-4 border-blue-500' : ''
                                             }`}
                                         >
-                                            <div className='relative'>
-                                                <img 
-                                                    src={getProfileImage(f.image)} 
-                                                    alt={f.name}
-                                                    className='w-10 h-10 rounded-full object-cover border-2 border-gray-200'
-                                                />
-                                                {activeSeller.some(c => c.sellerId === f.fdId) && (
-                                                    <div className='w-3 h-3 rounded-full bg-green-500 absolute -bottom-1 -right-1 border-2 border-white'></div>
-                                                )}
-                                            </div>
+                                            <Avatar 
+                                                type="seller"
+                                                image={f.image}
+                                                name={f.name}
+                                                size="sm"
+                                                showOnline={isSellerOnline(f.fdId)}
+                                            />
                                             <div className='flex-1 min-w-0'>
                                                 <p className='font-medium text-gray-900 truncate'>{f.name}</p>
                                                 <p className='text-xs text-gray-500'>
-                                                    {activeSeller.some(c => c.sellerId === f.fdId) ? 'En ligne' : 'Hors ligne'}
+                                                    {isSellerOnline(f.fdId) ? 'En ligne' : 'Hors ligne'}
                                                 </p>
                                             </div>
                                         </Link>
@@ -157,20 +164,17 @@ const Chat = () => {
                                 {/* Header du chat */}
                                 <div className='p-4 border-b border-gray-200 bg-white flex justify-between items-center'>
                                     <div className='flex items-center gap-3'>
-                                        <div className='relative'>
-                                            <img 
-                                                src={getProfileImage(currentFd.image)} 
-                                                alt={currentFd.name}
-                                                className='w-10 h-10 rounded-full object-cover border-2 border-gray-200'
-                                            />
-                                            {activeSeller.some(c => c.sellerId === currentFd.fdId) && (
-                                                <div className='w-3 h-3 rounded-full bg-green-500 absolute -bottom-1 -right-1 border-2 border-white'></div>
-                                            )}
-                                        </div>
+                                        <Avatar 
+                                            type="seller"
+                                            image={currentFd.image}
+                                            name={currentFd.name}
+                                            size="sm"
+                                            showOnline={isSellerOnline(currentFd.fdId)}
+                                        />
                                         <div>
                                             <h3 className='font-semibold text-gray-900'>{currentFd.name}</h3>
                                             <p className='text-xs text-gray-500'>
-                                                {activeSeller.some(c => c.sellerId === currentFd.fdId) ? 'En ligne' : 'Hors ligne'}
+                                                {isSellerOnline(currentFd.fdId) ? 'En ligne' : 'Hors ligne'}
                                             </p>
                                         </div>
                                     </div>
@@ -195,10 +199,11 @@ const Chat = () => {
                                                     className={`flex gap-3 ${isMyMessage ? 'justify-end' : 'justify-start'}`}
                                                 >
                                                     {!isMyMessage && (
-                                                        <img 
-                                                            className='w-8 h-8 rounded-full object-cover flex-shrink-0' 
-                                                            src={getProfileImage(currentFd?.image)} 
-                                                            alt="" 
+                                                        <Avatar 
+                                                            type="seller"
+                                                            image={currentFd?.image}
+                                                            name={currentFd?.name}
+                                                            size="xs"
                                                         />
                                                     )}
                                                     <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl shadow-sm ${
@@ -209,10 +214,11 @@ const Chat = () => {
                                                         <p className='text-sm'>{m.message}</p>
                                                     </div>
                                                     {isMyMessage && (
-                                                        <img 
-                                                            className='w-8 h-8 rounded-full object-cover flex-shrink-0' 
-                                                            src={getProfileImage(userInfo?.image)} 
-                                                            alt="" 
+                                                        <Avatar 
+                                                            type="customer"
+                                                            image={userInfo?.image}
+                                                            name={userInfo?.name}
+                                                            size="xs"
                                                         />
                                                     )}
                                                 </div>
