@@ -7,11 +7,8 @@ import { Link, useParams } from 'react-router-dom'
 import { add_friend, send_message, updateMessage, messageClear } from '../../store/reducers/chatReducer';
 import toast from 'react-hot-toast';
 import { FaList, FaComments } from 'react-icons/fa'
-import io from 'socket.io-client';
 import Avatar from '../Avatar';
-
-
-const socket = io('http://localhost:5000');
+import { socket } from '../../config/socket';
 
 const Chat = () => {
 
@@ -30,14 +27,15 @@ const Chat = () => {
     const isSellerOnline = (sellerId) => {
         if (!sellerId || !activeSeller || activeSeller.length === 0) return false;
         return activeSeller.some(s => {
-            // Vérifier toutes les possibilités
-            return s.sellerId === sellerId || 
+            const isOnline = s.sellerId === sellerId || 
                    s._id === sellerId || 
                    (s.userInfo && s.userInfo._id === sellerId);
+            return isOnline;
         });
     };
     
     useEffect(() => {
+        console.log('🔵 Client émet add_user:', userInfo.id, userInfo.name)
         socket.emit('add_user',userInfo.id, userInfo)
     },[userInfo])
 
@@ -61,15 +59,33 @@ const Chat = () => {
     }
 
     useEffect(() => {
-        socket.on('seller_message', msg => {
+        const handleSellerMessage = (msg) => {
             setReceverMessage(msg)
-        })
-        socket.on('activeSeller', (sellers) => {
+        }
+        
+        const handleActiveSeller = (sellers) => {
+            console.log('🟢 === DEBUG ACTIVE SELLERS ===')
             console.log('Active sellers received:', sellers)
+            console.log('Sellers count:', sellers.length)
+            console.log('Sellers structure:', sellers.map(s => ({
+                sellerId: s.sellerId,
+                _id: s._id,
+                userInfoId: s.userInfo?._id,
+                userInfoName: s.userInfo?.name
+            })))
             console.log('Current friend fdId:', currentFd?.fdId)
             console.log('My friends:', my_friends.map(f => ({ name: f.name, fdId: f.fdId })))
+            console.log('===========================')
             setActiveSeller(sellers)
-        })
+        }
+        
+        socket.on('seller_message', handleSellerMessage)
+        socket.on('activeSeller', handleActiveSeller)
+        
+        return () => {
+            socket.off('seller_message', handleSellerMessage)
+            socket.off('activeSeller', handleActiveSeller)
+        }
     },[])
 
     useEffect(() => {
