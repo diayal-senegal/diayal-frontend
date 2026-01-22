@@ -20,7 +20,8 @@ const SearchProducts = () => {
 
     let [searchParams, setSearchParams] = useSearchParams();
     const category = searchParams.get('category') || '';
-    const searchValue = searchParams.get('searchValue') || '';
+    const searchValue = searchParams.get('value') || '';
+    const searchType = searchParams.get('type') || 'product';
    
 
     const dispatch = useDispatch();
@@ -56,10 +57,11 @@ const SearchProducts = () => {
             rating,
             sortPrice,
             pageNumber,
-            searchValue
+            searchValue,
+            type: searchType
          })
         )
-      }, [state.values[0], state.values[1], category, rating, sortPrice,  pageNumber, searchValue,  dispatch])
+      }, [state.values[0], state.values[1], category, rating, sortPrice,  pageNumber, searchValue, searchType, dispatch])
     
 
       
@@ -105,7 +107,8 @@ const SearchProducts = () => {
                 <div className={`w-3/12 md-lg:w-4/12 md:w-full pr-8 ${filter ? 'md:h-0 md:overflow-hidden md:mb-6' : 'md:h-auto md:overflow-auto md:mb-0'}`}>
                    
 
-                    
+                    {searchType !== 'shop' && (
+                    <>
                <div className='py-2 flex flex-col gap-5'>
                   <h2 className='text-3xl font-bold mb-3 text-slate-600'>Prix</h2>
                   <Range
@@ -181,12 +184,14 @@ const SearchProducts = () => {
                    </div>
                          <div className='py-5 flex flex-col gap-4 md:hidden'>
                             <Products title='Nouveautés' products={latest_product}/>
-                         </div> 
+                         </div>
+                    </>
+                    )}
                     </div>
                           <div className='w-9/12 md-lg:w-8/12 md:w-full'>
                              <div className='pl-8 md:pl-0'>
                                 <div className='py-4 bg-white mb-10 px-3 rounded-md flex justify-between items-start border'>
-                                    <h2 className='text-lg font-medium text-slate-600'>({totalProduct}) Articles </h2> 
+                                    <h2 className='text-lg font-medium text-slate-600'>({totalProduct}) Articles</h2> 
                                     <div className='flex justify-center items-center gap-3'>
                                         <select onChange={(e) => setSortPrice(e.target.value)} className='p-1 border outline-0 text-slate-600 font-semibold' name="" id="">
                                             <option value=''>Trier par</option>
@@ -201,7 +206,7 @@ const SearchProducts = () => {
                                                <FaThList/>
                                             </div>   
                                         </div>
-                                    </div>    
+                                    </div>
                                 </div>
                                      <div className='pb-8'>
                                         <ShopProducts products={products} styles={styles} />

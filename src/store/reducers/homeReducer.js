@@ -60,7 +60,7 @@ export const query_products = createAsyncThunk(
         try {
             const { data } = await api.get(`/home/query-products?category=${query.category}&&rating=${
                 query.rating}&&lowPrice=${query.low}&&highPrice=${query.high}&&sortPrice=${
-                query.sortPrice}&&pageNumber=${query.pageNumber}&&searchValue=${query.searchValue ? query.searchValue : ''}`)
+                query.sortPrice}&&pageNumber=${query.pageNumber}&&searchValue=${query.searchValue ? query.searchValue : ''}&&type=${query.type || 'product'}`)
 
             // console.log(data);
             
@@ -238,7 +238,10 @@ export const homeReducer = createSlice({
            totalProducts: 0,
            avgRating: 0
        },
-       newArrivalLoading: false 
+       newArrivalLoading: false,
+       shops: [],
+       totalShops: 0,
+       searchType: 'product'
     },
     reducers: {
          messageClear : (state,_) => {
@@ -265,9 +268,10 @@ export const homeReducer = createSlice({
         })
 
         .addCase(query_products.fulfilled, (state, { payload }) => {
-           state.products = payload.products; 
-           state.totalProduct = payload.totalProduct; 
-           state.parPage = payload.parPage; 
+           state.products = payload.products;
+           state.totalProduct = payload.totalProduct;
+           state.parPage = payload.parPage;
+           state.searchType = payload.type || 'product';
         })
 
         .addCase(product_details.fulfilled, (state, { payload }) => {

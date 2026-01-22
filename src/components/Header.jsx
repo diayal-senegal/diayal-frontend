@@ -20,9 +20,10 @@ const Header = () => {
     const {pathname} = useLocation()
     const [searchValue, setSearchValue] = useState('')
     const [category, setCategory] = useState('')
+    const [searchType, setSearchType] = useState('product')
 
     const search = () => {
-      navigate(`/products/search?category=${category}&value=${searchValue}`)
+      navigate(`/products/search?category=${category}&value=${searchValue}&type=${searchType}`)
     }
 
     const redirect_card_page = () => {
@@ -105,29 +106,54 @@ const Header = () => {
 
           {/* CENTRE : Barre de recherche */}
           <div className='flex-1 min-w-[250px] sm:min-w-[350px] max-w-md mx-auto'>
-            <div className='flex bg-white rounded-md overflow-hidden shadow-sm'>
-              <select
-                onChange={(e) => setCategory(e.target.value)}
-                className='bg-blu-100 border-r border-gray-300 px-2 sm:px-0 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none min-w-[100px]'
-              >
-                <option value="">Toutes les catégories</option>
-                {categorys.map((c, i) => (
-                  <option key={i} value={c.slug}>{c.name}</option>
-                ))}
-              </select>
-              <input
-                onChange={(e) => setSearchValue(e.target.value)}
-                type="text"
-                placeholder="Rechercher..."
-                className='flex-1 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none'
-                onKeyDown={(e) => e.key === 'Enter' && search()}
-              />
-              <button
-                onClick={search}
-                className='bg-[#059473] hover:bg-green-600 px-3 py-2 transition-colors'
-              >
-                <FaSearch className='text-black text-sm' />
-              </button>
+            <div className='flex flex-col gap-1'>
+              <div className='flex bg-white rounded-md overflow-hidden shadow-sm'>
+                <select
+                  onChange={(e) => setCategory(e.target.value)}
+                  className='bg-blu-100 border-r border-gray-300 px-2 sm:px-0 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none min-w-[100px]'
+                  disabled={searchType === 'shop'}
+                >
+                  <option value="">Toutes les catégories</option>
+                  {categorys.map((c, i) => (
+                    <option key={i} value={c.slug}>{c.name}</option>
+                  ))}
+                </select>
+                <input
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  type="text"
+                  placeholder={searchType === 'product' ? 'Rechercher un produit...' : 'Rechercher une boutique...'}
+                  className='flex-1 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none'
+                  onKeyDown={(e) => e.key === 'Enter' && search()}
+                />
+                <button
+                  onClick={search}
+                  className='bg-[#059473] hover:bg-green-600 px-3 py-2 transition-colors'
+                >
+                  <FaSearch className='text-black text-sm' />
+                </button>
+              </div>
+              <div className='flex gap-2 text-xs'>
+                <label className='flex items-center gap-1 cursor-pointer text-black'>
+                  <input
+                    type="radio"
+                    value="product"
+                    checked={searchType === 'product'}
+                    onChange={(e) => setSearchType(e.target.value)}
+                    className='cursor-pointer'
+                  />
+                  <span>Produit</span>
+                </label>
+                <label className='flex items-center gap-1 cursor-pointer text-black'>
+                  <input
+                    type="radio"
+                    value="shop"
+                    checked={searchType === 'shop'}
+                    onChange={(e) => setSearchType(e.target.value)}
+                    className='cursor-pointer'
+                  />
+                  <span>Boutique/Atelier</span>
+                </label>
+              </div>
             </div>
           </div>
 
@@ -153,8 +179,8 @@ const Header = () => {
             {/* Connexion */}
             {userInfo ? (
               <Link to='/dashboard' className='flex items-center gap-1 text-black hover:text-white transition-colors text-lg sm:text-base'>
-                <FaUser className='text-xl sm:text-lg' />
-                <span className='text-lg sm:text-base font-medium'> Bonjour, {userInfo.name}</span>
+                <FaUser className='text-md sm:text-lg' />
+                <span className='text-md sm:text-base font-medium'> Bonjour, {userInfo.name}</span>
               </Link>
             ) : (
               <Link to='/login' className='flex items-center gap-1 text-black hover:text-white transition-colors text-lg sm:text-base'>
@@ -169,7 +195,7 @@ const Header = () => {
                 onClick={() => navigate(userInfo ? '/dashboard/my-wishlist' : '/login')}
                 className='relative cursor-pointer text-black hover:text-white transition-colors'
               >
-                <FaHeart className='text-lg sm:text-xl' />
+                <FaHeart className='text-md sm:text-md' />
                 {wishlist_count !== 0 && (
                   <span className='absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center'>
                     {wishlist_count}
@@ -181,7 +207,7 @@ const Header = () => {
                 onClick={redirect_card_page}
                 className='relative cursor-pointer text-black hover:text-white transition-colors'
               >
-                <FaCartShopping className='text-lg sm:text-xl' />
+                <FaCartShopping className='text-md sm:text-md' />
                 {card_product_count !== 0 && (
                   <span className='absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center'>
                     {card_product_count}

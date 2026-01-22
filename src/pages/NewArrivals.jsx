@@ -49,11 +49,21 @@ const NewArrivals = () => {
         }
     }, [activeCategory, dispatch]);
 
+    // Fonction pour générer un badge dynamique basé sur daysAgo
+    const getBadgeFromDays = (daysAgo) => {
+        if (daysAgo === 0) return "Nouveau aujourd'hui";
+        if (daysAgo === 1) return "Nouveau hier";
+        if (daysAgo <= 3) return "Nouvelle création";
+        if (daysAgo <= 7) return "Nouvelle cette semaine";
+        if (daysAgo <= 14) return "Arrivée récente";
+        return "Récent";
+    };
+
     // Logique d'affichage : nouvelles arrivées ou produits par catégorie
     const getDisplayProducts = () => {
         if (newArrivals.length > 0) {
             // Utiliser les nouvelles arrivées réelles
-            return newArrivals.map((product, index) => ({
+            return newArrivals.map((product) => ({
                 _id: product._id,
                 name: product.name,
                 price: product.price,
@@ -62,25 +72,28 @@ const NewArrivals = () => {
                 daysAgo: product.daysAgo,
                 images: product.images,
                 slug: product.slug,
-                badge: product.badge,
+                badge: product.badge || getBadgeFromDays(product.daysAgo),
                 artisan: product.shopName || 'Artisan local',
                 region: 'Sénégal'
             }));
         } else if (products.length > 0) {
             // Fallback sur les produits de la catégorie
-            return products.map((product, index) => ({
-                _id: product._id,
-                name: product.name,
-                price: product.price,
-                rating: product.rating,
-                reviews: product.reviewCount || 0,
-                daysAgo: Math.floor(Math.random() * 30) + 1,
-                images: product.images,
-                slug: product.slug,
-                badge: index < 3 ? `Nouveau ${index === 0 ? 'aujourd\'hui' : 'cette semaine'}` : 'Récent',
-                artisan: product.shopName || 'Artisan local',
-                region: 'Sénégal'
-            }));
+            return products.map((product) => {
+                const daysAgo = product.daysAgo || 0;
+                return {
+                    _id: product._id,
+                    name: product.name,
+                    price: product.price,
+                    rating: product.rating,
+                    reviews: product.reviewCount || 0,
+                    daysAgo: daysAgo,
+                    images: product.images,
+                    slug: product.slug,
+                    badge: getBadgeFromDays(daysAgo),
+                    artisan: product.shopName || 'Artisan local',
+                    region: 'Sénégal'
+                };
+            });
         }
         return [];
     };
@@ -138,8 +151,8 @@ const NewArrivals = () => {
                                 <p className="text-gray-600">Chargement des nouvelles créations...</p>
                             </div>
                         ) : displayProducts.length > 0 ? (
-                            displayProducts.map((product, index) => (
-                                <ProductCard key={product._id} product={product} index={index} />
+                            displayProducts.map((product) => (
+                                <ProductCard key={product._id} product={product} />
                             ))
                         ) : (
                             <div className="col-span-full text-center py-12">
@@ -225,10 +238,11 @@ const NewArrivals = () => {
     );
 };
 
-const ProductCard = ({ product, index }) => {
+const ProductCard = ({ product }) => {
     const getBadgeColor = (badge) => {
         const colors = {
             "Nouveau aujourd'hui": "bg-purple-500",
+            "Nouveau hier": "bg-purple-600",
             "Nouvelle création": "bg-blue-500",
             "Récent": "bg-green-500",
             "Arrivée récente": "bg-orange-500",
