@@ -271,21 +271,24 @@ const Footer = () => {
 
             {/* Paiements & certifications */}
             <div className="w-[90%] mx-auto py-6 border-t border-gray-700">
-                <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
-                    <div className="flex flex-col sm:flex-row items-center gap-3 text-gray-400 text-sm text-center sm:text-left">
-                        <span className="hidden sm:inline-block">|</span>
-                    </div>
+                <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
+                    {/* Paiement sécurisé */}
+                    <span className="flex items-center gap-1 text-gray-400 text-sm whitespace-nowrap">
+                        🔒 Paiement 100% sécurisé
+                    </span>
 
-                    <div className="flex flex-wrap justify-center items-center gap-3">
-                        <span className="flex items-center gap-1">🔒 Paiement 100% sécurisé</span><div></div>
-                        <img src="/images/payment/orange.png" alt="Orange Money" className="h-[30px] object-contain"/>
-                        <img src="/images/payment/wave.png" alt="Wave" className="h-[33px] object-contain"/>
-                        <img src="/images/payment/free.png"  alt="Free Money" className="h-[30px] rounded-full object-contain"/>
-                        <img src="/images/payment/visa.png" alt="Visa" className="h-[23px] object-contain"/>
-                        <img src="/images/payment/master.png" alt="Mastercard" className="h-[27px] object-contain"/>
-                        <img src="/images/payment/payp.png" alt="Paypal" className="h-[20px] object-contain"/>
-                    </div>
-                        <span className="flex items-center gap-1">🚚 Livraison rapide </span>
+                    {/* Logos de paiement */}
+                    <img src="/images/payment/orange.png" alt="Orange Money" className="h-[28px] object-contain"/>
+                    <img src="/images/payment/wave.png" alt="Wave" className="h-[28px] object-contain"/>
+                    <img src="/images/payment/free.png" alt="Free Money" className="h-[28px] object-contain"/>
+                    <img src="/images/payment/visa.png" alt="Visa" className="h-[28px] object-contain"/>
+                    <img src="/images/payment/master.png" alt="Mastercard" className="h-[28px] object-contain"/>
+                    <img src="/images/payment/payp.png" alt="Paypal" className="h-[28px] object-contain"/>
+
+                    {/* Livraison rapide */}
+                    <span className="flex items-center gap-1 text-gray-400 text-sm whitespace-nowrap">
+                        🚚 Livraison rapide
+                    </span>
                 </div>
             </div>
 
