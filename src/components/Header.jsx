@@ -184,12 +184,13 @@ const Header = () => {
               </Link>
             ) : (
               <Link to='/login' className='flex items-center gap-1 text-black hover:text-white transition-colors text-lg sm:text-base'>
-                <FaLock className='text-xl sm:text-md' />
-                <span className='text-lg sm:text-base font-medium'>Se connecter</span>
+                <FaLock className='text-lg sm:text-md' />
+                <span className='text-md sm:text-base font-medium'>Se connecter</span>
               </Link>
             )}
 
-            {/* Wishlist & Panier - Visible sur desktop, caché sur mobile */}
+            {/* Wishlist & Panier - Visible sur desktop uniquement si connecté, caché sur mobile */}
+            {userInfo && (
             <div className='md-lg:hidden flex items-center gap-3'>
               <div
                 onClick={() => navigate(userInfo ? '/dashboard/my-wishlist' : '/login')}
@@ -215,6 +216,7 @@ const Header = () => {
                 )}
               </div>
             </div>
+            )}
           </div>
 
         </div>

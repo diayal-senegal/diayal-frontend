@@ -238,8 +238,8 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* Whishlit et panier volants */}
-
+            {/* Whishlit et panier volants - Visible uniquement si connecté */}
+            {userInfo && (
             <div className='hidden fixed md-lg:block w-[50px] h-[90px] bottom-3 right-2 bg- rounded-full p-2 z-50'>
         <div className='w-full h-full flex gap-3 flex-col justify-center items-center'>
         <div onClick={() => navigate(userInfo ? '/card' : '/login') }  className='relative flex justify-center items-center cursor-pointer w-[25px] h-[25px] rounded-full bg-'>
@@ -268,6 +268,7 @@ const Footer = () => {
 
         </div>
     </div>
+            )}
 
             {/* Paiements & certifications */}
             <div className="w-[90%] mx-auto py-6 border-t border-gray-700">
