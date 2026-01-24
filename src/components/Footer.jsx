@@ -240,12 +240,12 @@ const Footer = () => {
 
             {/* Whishlit et panier volants */}
 
-            {/* <div className='hidden fixed md-lg:block w-[50px] h-[110px] bottom-3 right-2 bg-white rounded-full p-2'>
+            <div className='hidden fixed md-lg:block w-[50px] h-[90px] bottom-3 right-2 bg- rounded-full p-2 z-50'>
         <div className='w-full h-full flex gap-3 flex-col justify-center items-center'>
-        <div onClick={() => navigate(userInfo ? '/card' : '/login') }  className='relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]'>
-            <span className='text-xl text-green-500'><FaCartShopping/></span>
+        <div onClick={() => navigate(userInfo ? '/card' : '/login') }  className='relative flex justify-center items-center cursor-pointer w-[25px] h-[25px] rounded-full bg-'>
+            <span className='text-lg text-green-500'><FaCartShopping/></span>
             {
-                card_product_count !== 0 && <div className='w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
+                card_product_count !== 0 && <div className='w-[15px] h-[15px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
                     {
                         card_product_count
                     }
@@ -254,10 +254,10 @@ const Footer = () => {
      
         </div>
 
-        <div  onClick={() => navigate(userInfo ? '/dashboard/my-wishlist' : '/login') } className='relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]'>
-            <span className='text-xl text-green-500'><FaHeart/></span>
+        <div  onClick={() => navigate(userInfo ? '/dashboard/my-wishlist' : '/login') } className='relative flex justify-center items-center cursor-pointer w-[25px] h-[25px] rounded-full'>
+            <span className='text-lg text-green-500'><FaHeart/></span>
             {
-                wishlist_count !== 0 && <div className='w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
+                wishlist_count !== 0 && <div className='w-[15px] h-[15px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
                     {
                        wishlist_count 
                     }
@@ -267,7 +267,7 @@ const Footer = () => {
         </div>
 
         </div>
-    </div> */}
+    </div>
 
             {/* Paiements & certifications */}
             <div className="w-[90%] mx-auto py-6 border-t border-gray-700">

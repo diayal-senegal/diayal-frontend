@@ -162,16 +162,16 @@ const Header = () => {
 
             {/* Réseaux sociaux */}
             <div className='flex items-center gap-2'>
-              <a className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px] hover:bg-[#1877f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1877f2] transition-all duration-300 hover:scale-110" href="https://www.facebook.com/profile.php?id=61582393357735&locale=fr_FR" title="Facebook">
+              <a className="w-[25px] h-[25px] sm:w-[22px] sm:h-[22px] hover:bg-[#1877f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1877f2] transition-all duration-300 hover:scale-110" href="https://www.facebook.com/profile.php?id=61582393357735&locale=fr_FR" title="Facebook">
                 <FaFacebookF className='text-sm' />
               </a>
-              <a className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px] hover:bg-[#000000] hover:text-white flex justify-center items-center rounded-full bg-white text-[#000000] transition-all duration-300 hover:scale-110" href="https://www.tiktok.com/@diayal1?lang=fr" title="TikTok">
+              <a className="w-[25px] h-[25px] sm:w-[22px] sm:h-[22px] hover:bg-[#000000] hover:text-white flex justify-center items-center rounded-full bg-white text-[#000000] transition-all duration-300 hover:scale-110" href="https://www.tiktok.com/@diayal1?lang=fr" title="TikTok">
                 <AiFillTikTok className='text-sm' />
               </a>
-              <a className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px] hover:bg-gradient-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:text-white flex justify-center items-center rounded-full bg-white text-[#e4405f] transition-all duration-300 hover:scale-110" href="https://www.instagram.com/diayal_officiel/" title="Instagram">
+              <a className="w-[25px] h-[25px] sm:w-[22px] sm:h-[22px] hover:bg-gradient-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:text-white flex justify-center items-center rounded-full bg-white text-[#e4405f] transition-all duration-300 hover:scale-110" href="https://www.instagram.com/diayal_officiel/" title="Instagram">
                 <FaSquareInstagram className='text-sm' />
               </a>
-              <a className="w-[25px] h-[25px] sm:w-[25px] sm:h-[25px hover:bg-[#1da1f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1da1f2] transition-all duration-300 hover:scale-110" href="https://x.com/Diayal_officiel" title="Twitter">
+              <a className="w-[25px] h-[25px] sm:w-[22px] sm:h-[22px] hover:bg-[#1da1f2] hover:text-white flex justify-center items-center rounded-full bg-white text-[#1da1f2] transition-all duration-300 hover:scale-110" href="https://x.com/Diayal_officiel" title="Twitter">
                 <FaTwitter className='text-sm' />
               </a>
             </div>
@@ -179,23 +179,23 @@ const Header = () => {
             {/* Connexion */}
             {userInfo ? (
               <Link to='/dashboard' className='flex items-center gap-1 text-black hover:text-white transition-colors text-lg sm:text-base'>
-                <FaUser className='text-md sm:text-lg' />
+                <FaUser className='text-md sm:text-sm' />
                 <span className='text-md sm:text-base font-medium'> Bonjour, {userInfo.name}</span>
               </Link>
             ) : (
               <Link to='/login' className='flex items-center gap-1 text-black hover:text-white transition-colors text-lg sm:text-base'>
-                <FaLock className='text-xl sm:text-lg' />
+                <FaLock className='text-xl sm:text-md' />
                 <span className='text-lg sm:text-base font-medium'>Se connecter</span>
               </Link>
             )}
 
-            {/* Wishlist & Panier */}
-            <div className='flex items-center gap-3'>
+            {/* Wishlist & Panier - Visible sur desktop, caché sur mobile */}
+            <div className='md-lg:hidden flex items-center gap-3'>
               <div
                 onClick={() => navigate(userInfo ? '/dashboard/my-wishlist' : '/login')}
                 className='relative cursor-pointer text-black hover:text-white transition-colors'
               >
-                <FaHeart className='text-md sm:text-md' />
+                <FaHeart className='text-md sm:text-sm' />
                 {wishlist_count !== 0 && (
                   <span className='absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center'>
                     {wishlist_count}
@@ -207,7 +207,7 @@ const Header = () => {
                 onClick={redirect_card_page}
                 className='relative cursor-pointer text-black hover:text-white transition-colors'
               >
-                <FaCartShopping className='text-md sm:text-md' />
+                <FaCartShopping className='text-md sm:text-sm' />
                 {card_product_count !== 0 && (
                   <span className='absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center'>
                     {card_product_count}
