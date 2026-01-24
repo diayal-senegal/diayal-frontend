@@ -15,7 +15,8 @@ const Register = () => {
     const navigate = useNavigate();
     const {loader, errorMessage, successMessage, userInfo } = useSelector(state => state.auth)
     const [state, setState] = useState({
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
     })
@@ -59,7 +60,12 @@ const Register = () => {
             return;
         }
         
-        dispatch(customer_register(state))
+        const registrationData = {
+            ...state,
+            name: `${state.firstName.trim()} ${state.lastName.trim()}`
+        };
+        
+        dispatch(customer_register(registrationData))
     }
 
     useEffect(() => {
@@ -100,20 +106,37 @@ const Register = () => {
                         </div>
 
                         <form onSubmit={register} className='space-y-4 md:space-y-6'>
-                            <div>
-                                <label htmlFor='name' className='block text-sm font-medium text-gray-700 mb-2'>
-                                    Nom complet
-                                </label>
-                                <input 
-                                    onChange={inputHandle} 
-                                    value={state.name}
-                                    className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 outline-none' 
-                                    type='text' 
-                                    name='name' 
-                                    id='name' 
-                                    placeholder='Votre nom complet' 
-                                    required 
-                                />
+                            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                                <div>
+                                    <label htmlFor='firstName' className='block text-sm font-medium text-gray-700 mb-2'>
+                                        Prénom
+                                    </label>
+                                    <input 
+                                        onChange={inputHandle} 
+                                        value={state.firstName}
+                                        className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 outline-none' 
+                                        type='text' 
+                                        name='firstName' 
+                                        id='firstName' 
+                                        placeholder='Votre prénom' 
+                                        required 
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='lastName' className='block text-sm font-medium text-gray-700 mb-2'>
+                                        Nom
+                                    </label>
+                                    <input 
+                                        onChange={inputHandle} 
+                                        value={state.lastName}
+                                        className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 outline-none' 
+                                        type='text' 
+                                        name='lastName' 
+                                        id='lastName' 
+                                        placeholder='Votre nom' 
+                                        required 
+                                    />
+                                </div>
                             </div>
 
                             <div>
