@@ -10,24 +10,12 @@ import { add_to_card, add_to_wishlist, messageClear } from '../store/reducers/ca
 import toast from 'react-hot-toast';
 import { dealsAPI } from '../api/deals';
 
-const Deals = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { userInfo } = useSelector(state => state.auth);
-    const { successMessage, errorMessage } = useSelector(state => state.card);
-    const [deals, setDeals] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [promotionEndTime, setPromotionEndTime] = useState(null);
+const CountdownTimer = ({ promotionEndTime }) => {
     const [timeLeft, setTimeLeft] = useState({
         hours: 0,
         minutes: 0,
         seconds: 0
     });
-
-    useEffect(() => {
-        fetchDeals();
-        fetchPromotionSettings();
-    }, []);
 
     useEffect(() => {
         if (!promotionEndTime) return;
@@ -50,6 +38,46 @@ const Deals = () => {
 
         return () => clearInterval(timer);
     }, [promotionEndTime]);
+
+    return (
+        <div className="flex gap-3 text-2xl font-bold">
+            <div className="text-center">
+                <div className="bg-gradient-to-br from-white to-purple-100 text-purple-900 rounded-xl px-5 py-4 min-w-[70px] shadow-lg">
+                    {timeLeft.hours.toString().padStart(2, '0')}
+                </div>
+                <div className="text-xs mt-2 text-purple-200 font-semibold">Heures</div>
+            </div>
+            <div className="text-3xl self-center text-white/50">:</div>
+            <div className="text-center">
+                <div className="bg-gradient-to-br from-white to-purple-100 text-purple-900 rounded-xl px-5 py-4 min-w-[70px] shadow-lg">
+                    {timeLeft.minutes.toString().padStart(2, '0')}
+                </div>
+                <div className="text-xs mt-2 text-purple-200 font-semibold">Minutes</div>
+            </div>
+            <div className="text-3xl self-center text-white/50">:</div>
+            <div className="text-center">
+                <div className="bg-gradient-to-br from-white to-purple-100 text-purple-900 rounded-xl px-5 py-4 min-w-[70px] shadow-lg">
+                    {timeLeft.seconds.toString().padStart(2, '0')}
+                </div>
+                <div className="text-xs mt-2 text-purple-200 font-semibold">Secondes</div>
+            </div>
+        </div>
+    );
+};
+
+const Deals = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { userInfo } = useSelector(state => state.auth);
+    const { successMessage, errorMessage } = useSelector(state => state.card);
+    const [deals, setDeals] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [promotionEndTime, setPromotionEndTime] = useState(null);
+
+    useEffect(() => {
+        fetchDeals();
+        fetchPromotionSettings();
+    }, []);
 
     useEffect(() => {
         if (successMessage) {
@@ -81,13 +109,11 @@ const Deals = () => {
             if (data.endTime) {
                 setPromotionEndTime(data.endTime);
             } else {
-                // Fallback: 24h à partir de maintenant
                 const fallbackEndTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
                 setPromotionEndTime(fallbackEndTime.toISOString());
             }
         } catch (error) {
-            console.log('Paramètres promotion non disponibles, utilisation du fallback');
-            // Fallback: 24h à partir de maintenant
+            console.error('Erreur paramètres promotion:', error);
             const fallbackEndTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
             setPromotionEndTime(fallbackEndTime.toISOString());
         }
@@ -183,7 +209,7 @@ const Deals = () => {
         return Math.round(price - (price * discount / 100));
     };
 
-    const ProductCard = ({ product }) => {
+    const ProductCard = React.memo(({ product }) => {
         const badgeInfo = getBadgeInfo(product.discount);
         const BadgeIcon = badgeInfo.icon;
         const salePrice = calculateSalePrice(product.price, product.discount);
@@ -191,7 +217,7 @@ const Deals = () => {
 
         return (
         <div className="bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 hover:border-purple-300 group">
-            <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 p-4 min-h-[280px]">
+            <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 p-4 min-h-[280px] overflow-hidden">
                 {product.discount && (
                     <div className="absolute top-2 left-2 right-2 z-20 flex items-start justify-between gap-2">
                         <div className={`${badgeInfo.color} text-white px-3 py-1.5 rounded-lg shadow-lg flex items-center gap-1.5 font-bold text-xs`}>
@@ -213,7 +239,7 @@ const Deals = () => {
                     </div>
                 )}
                 
-                <div className="aspect-square flex items-center justify-center">
+                <div className="aspect-square flex items-center justify-center overflow-hidden">
                     <img
                         className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
                         src={product.images[0]}
@@ -221,8 +247,8 @@ const Deals = () => {
                     />
                 </div>
                 
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <div className="flex gap-2">
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
+                    <div className="flex gap-2 pointer-events-auto">
                         <button
                             onClick={() => add_wishlist(product)}
                             className="w-9 h-9 bg-white/90 backdrop-blur-sm flex items-center justify-center rounded-full shadow-md hover:bg-red-500 hover:text-white transition-all duration-200"
@@ -287,7 +313,7 @@ const Deals = () => {
             </div>
         </div>
         );
-    };
+    });
 
     if (loading) {
         return (
@@ -330,28 +356,7 @@ const Deals = () => {
                                 <FaClock className="text-yellow-300" />
                                 <p className="text-sm font-semibold text-purple-100">Offre limitée - Se termine dans :</p>
                             </div>
-                            <div className="flex gap-3 text-2xl font-bold">
-                                <div className="text-center">
-                                    <div className="bg-gradient-to-br from-white to-purple-100 text-purple-900 rounded-xl px-5 py-4 min-w-[70px] shadow-lg">
-                                        {timeLeft.hours.toString().padStart(2, '0')}
-                                    </div>
-                                    <div className="text-xs mt-2 text-purple-200 font-semibold">Heures</div>
-                                </div>
-                                <div className="text-3xl self-center text-white/50">:</div>
-                                <div className="text-center">
-                                    <div className="bg-gradient-to-br from-white to-purple-100 text-purple-900 rounded-xl px-5 py-4 min-w-[70px] shadow-lg">
-                                        {timeLeft.minutes.toString().padStart(2, '0')}
-                                    </div>
-                                    <div className="text-xs mt-2 text-purple-200 font-semibold">Minutes</div>
-                                </div>
-                                <div className="text-3xl self-center text-white/50">:</div>
-                                <div className="text-center">
-                                    <div className="bg-gradient-to-br from-white to-purple-100 text-purple-900 rounded-xl px-5 py-4 min-w-[70px] shadow-lg">
-                                        {timeLeft.seconds.toString().padStart(2, '0')}
-                                    </div>
-                                    <div className="text-xs mt-2 text-purple-200 font-semibold">Secondes</div>
-                                </div>
-                            </div>
+                            <CountdownTimer promotionEndTime={promotionEndTime} />
                         </div>
                     </div>
                 </div>
