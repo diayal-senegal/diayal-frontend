@@ -72,6 +72,11 @@ const Products = ({title,products}) => {
                             PIÈCE UNIQUE
                           </span>
                         )}
+                        {pl.isPreOrder && (
+                          <span className='absolute top-8 left-1 bg-gradient-to-r from-purple-500 to-indigo-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm z-10'>
+                            PRÉCOMMANDE
+                          </span>
+                        )}
                         </div>
                         <div className='px-3 flex justify-start items-start gap-1 flex-col text-slate-600'>
                         <h2>{pl.name}</h2>

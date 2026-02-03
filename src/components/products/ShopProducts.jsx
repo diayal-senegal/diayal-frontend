@@ -74,6 +74,11 @@ const ShopProducts = ({styles, products}) => {
                             PIÈCE UNIQUE
                         </span>
                     )}
+                    {p.isPreOrder && (
+                        <span className="absolute top-12 right-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm z-10">
+                            PRÉCOMMANDE
+                        </span>
+                    )}
 
                     <div className="aspect-square flex items-center justify-center">
                         <img
