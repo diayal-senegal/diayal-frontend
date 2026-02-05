@@ -69,14 +69,14 @@ const ShopProducts = ({styles, products}) => {
                             -{p.discount}%
                         </span>
                     ) : null}
-                    {p.isUniqueItem && (
-                        <span className="absolute top-2 right-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm z-10">
-                            PIÈCE UNIQUE
+                    {p.isPreOrder && (
+                        <span className="absolute top-2 right-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm z-10">
+                            PRÉCOMMANDE
                         </span>
                     )}
-                    {p.isPreOrder && (
-                        <span className="absolute top-12 right-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm z-10">
-                            PRÉCOMMANDE
+                    {p.isUniqueItem && (
+                        <span className="absolute bottom-2 right-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm z-10">
+                            PIÈCE UNIQUE
                         </span>
                     )}
 

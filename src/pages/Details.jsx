@@ -48,6 +48,7 @@ const Details = () => {
   
   const [image, setImage] = useState('')
   const [state, setState] = useState('reviews');
+  const [showPreOrderModal, setShowPreOrderModal] = useState(false);
   const responsive = {
         superLargeDesktop: {
           // the naming can be any, depends on you.
@@ -98,15 +99,30 @@ const Details = () => {
 
        const add_card = () => {
           if (userInfo) {
-            dispatch(add_to_card({
-              userId: userInfo.id,
-              quantity,
-              productId: product._id
-            }));
+            // Si c'est une précommande, afficher la modale de confirmation
+            if (product.isPreOrder) {
+              setShowPreOrderModal(true);
+            } else {
+              // Ajout normal au panier
+              dispatch(add_to_card({
+                userId: userInfo.id,
+                quantity,
+                productId: product._id
+              }));
+            }
           } else {
             toast.error("Veuillez créer un compte ou vous connecter pour ajouter des articles au panier");
             navigate('/login');
           }
+        };
+
+        const confirmPreOrder = () => {
+          dispatch(add_to_card({
+            userId: userInfo.id,
+            quantity,
+            productId: product._id
+          }));
+          setShowPreOrderModal(false);
         };
 
         const add_wishlist = () => {
@@ -164,6 +180,45 @@ const Details = () => {
     return (
         <div>
             <Header />
+            
+            {/* Modale de confirmation précommande */}
+            {showPreOrderModal && (
+              <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4'>
+                <div className='bg-white rounded-lg p-6 max-w-md w-full'>
+                  <h3 className='text-xl font-bold text-slate-800 mb-3'>📅 Confirmer la précommande</h3>
+                  <div className='mb-4 p-3 bg-blue-50 rounded-md border border-blue-200'>
+                    <p className='text-slate-700 mb-2'>
+                      Vous êtes sur le point de précommander <span className='font-bold'>{product.name}</span>
+                    </p>
+                    <p className='text-sm text-blue-700 mb-1'>
+                      <span className='font-semibold'>Date de disponibilité :</span> {product.preOrderDate ? new Date(product.preOrderDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Non définie'}
+                    </p>
+                    <p className='text-sm text-slate-600'>
+                      <span className='font-semibold'>Quantité :</span> {quantity}
+                    </p>
+                  </div>
+                  <div className='bg-amber-50 border border-amber-200 rounded-md p-3 mb-4'>
+                    <p className='text-sm text-amber-800'>
+                      <span className='font-bold'>⚠️ Important :</span> Vous paierez maintenant et recevrez l'article à la date indiquée. La précommande est un engagement.
+                    </p>
+                  </div>
+                  <div className='flex gap-3'>
+                    <button
+                      onClick={() => setShowPreOrderModal(false)}
+                      className='flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-md hover:bg-slate-50'
+                    >
+                      Annuler
+                    </button>
+                    <button
+                      onClick={confirmPreOrder}
+                      className='flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-semibold'
+                    >
+                      Confirmer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
               <section className='bg-[url(http://localhost:3000/images/banner/diay.png)] bg-cover bg-no-repeat h-[390px] mt-6 relative bg-left'>
              <div className='absolute left-0 top-0 w-full h-full bg-[#2422228a]'>
               <div className='w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] mx-auto h-full'>
@@ -198,8 +253,13 @@ const Details = () => {
                  <div>
                     <div className='p-5 border relative flex justify-center items-center bg-white'>
                        <img className='h-[400px] w-auto max-w-full object-contain' src={image ?  image : product.images?.[0]} alt="" />
+                       {product.isPreOrder && (
+                         <span className='absolute top-8 left-8 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-bold px-3 py-2 rounded-md shadow-lg z-10'>
+                           PRÉCOMMANDE
+                         </span>
+                       )}
                        {product.isUniqueItem && (
-                         <span className='absolute top-8 right-8 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-bold px-3 py-2 rounded-md shadow-lg z-10'>
+                         <span className='absolute bottom-8 right-8 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-bold px-3 py-2 rounded-md shadow-lg z-10'>
                            PIÈCE UNIQUE
                          </span>
                        )}
@@ -254,7 +314,16 @@ const Details = () => {
                   <h2>{product.price - Math.floor((product.price * product.discount) / 100)} FCFA (-{product.discount}%)</h2>
                 </> : <h2>Prix : {product.price} FCFA</h2>
               }
-           </div> 
+           </div>
+           {product.isPreOrder && product.preOrderDate && (
+             <div className='p-3 rounded-md bg-blue-50 border border-blue-200'>
+               <p className='text-blue-700 font-semibold text-sm'>📅 Précommande</p>
+               <p className='text-blue-600 text-sm mt-1'>
+                 Disponible le : <span className='font-bold'>{new Date(product.preOrderDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+               </p>
+               <p className='text-blue-500 text-xs mt-1'>Vous paierez maintenant et recevrez l'article à cette date.</p>
+             </div>
+           )} 
              <div className='text-slate-600'>
                 <p>
                    {product.description ? product.description.substring(0, 230) + '...' : ''}
@@ -272,8 +341,8 @@ const Details = () => {
                          <div onClick={inc} className='px-6 cursor-pointer'>+</div> 
                      </div>
                        <div>
-                         <button onClick={add_card} className="bg-[#059473] text-white px-6 py-3 flex items-center justify-center min-h-[50px] w-full sm:w-auto cursor-pointer hover:shadow-lg hover:shadow-green-500/40">
-                         Ajouter au panier
+                         <button onClick={add_card} className={`${product.isPreOrder ? 'bg-blue-600 hover:shadow-blue-500/40' : 'bg-[#059473] hover:shadow-green-500/40'} text-white px-6 py-3 flex items-center justify-center min-h-[50px] w-full sm:w-auto cursor-pointer hover:shadow-lg`}>
+                         {product.isPreOrder ? 'Précommander maintenant' : 'Ajouter au panier'}
                          </button>
 
                        </div>
@@ -293,8 +362,8 @@ const Details = () => {
       <span>Partager sur</span>
     </div>
     <div className="flex flex-col gap-4">
-      <span className={`text-${product.stock ? 'green' : 'red'}-500`}>
-        {product.stock ? `En stock(${product.stock})` : 'En rupture de stock'}
+      <span className={`${product.isPreOrder ? 'text-blue-600 font-semibold' : product.stock ? 'text-green-500' : 'text-red-500'}`}>
+        {product.isPreOrder ? `Précommande (${product.stock} disponibles)` : product.stock ? `En stock(${product.stock})` : 'En rupture de stock'}
       </span>
       <ul className="flex justify-start items-center gap-3">
         <li>
@@ -332,8 +401,8 @@ const Details = () => {
   {/* Bloc Boutons */}
   <div className="flex gap-3">
     {product.stock && (
-      <button onClick={buynow} className="bg-[#24a889] text-white px-6 py-3 flex items-center justify-center min-h-[50px] w-full sm:w-auto cursor-pointer hover:shadow-lg hover:shadow-green-500/40">
-        Acheter maintenant
+      <button onClick={buynow} className={`${product.isPreOrder ? 'bg-blue-700 hover:shadow-blue-500/40' : 'bg-[#24a889] hover:shadow-green-500/40'} text-white px-6 py-3 flex items-center justify-center min-h-[50px] w-full sm:w-auto cursor-pointer hover:shadow-lg`}>
+        {product.isPreOrder ? 'Précommander et payer' : 'Acheter maintenant'}
       </button>
     )}
     <Link
