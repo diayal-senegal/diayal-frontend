@@ -9,10 +9,11 @@ import { AiFillStar } from 'react-icons/ai';
 import { CiStar } from 'react-icons/ci';
 import { BsFillGridFill } from 'react-icons/bs';
 import { FaThList } from 'react-icons/fa';
+import { MdKeyboardArrowDown, MdKeyboardArrowRight } from 'react-icons/md';
 import ShopProducts from '../components/products/ShopProducts';
 import Pagination from '../components/Pagination';
 import { useSelector, useDispatch } from 'react-redux';
-import { price_range_product, query_products } from '../store/reducers/homeReducer';
+import { price_range_product, query_products, get_subcategories } from '../store/reducers/homeReducer';
 import Products from '../components/products/Products';
 
 
@@ -20,7 +21,7 @@ import Products from '../components/products/Products';
 const Shops = () => {
 
     const dispatch = useDispatch();
-    const {products, categorys, latest_product, priceRange, totalProduct, parPage } = useSelector(state => state.home)
+    const {products, categorys, subcategories, latest_product, priceRange, totalProduct, parPage } = useSelector(state => state.home)
 
     useEffect(() => {
         dispatch(price_range_product())
@@ -41,11 +42,27 @@ const Shops = () => {
     const [sortPrice, setSortPrice] = useState('')
 
     const [category, setCategory] = useState('')
+    const [subcategory, setSubcategory] = useState('')
+    const [expandedCategory, setExpandedCategory] = useState('')
+
     const queryCategory = (e, value) => {
       if (e.target.checked) {
          setCategory(value)
+         setSubcategory('')
+         setExpandedCategory(value)
+         dispatch(get_subcategories(decodeURIComponent(value)))
       } else {
          setCategory('')
+         setSubcategory('')
+         setExpandedCategory('')
+      }
+    }
+
+    const querySubcategory = (e, value) => {
+      if (e.target.checked) {
+         setSubcategory(value)
+      } else {
+         setSubcategory('')
       }
     }
    
@@ -55,12 +72,13 @@ const Shops = () => {
             low: state.values[0],
             high: state.values[1],
             category,
+            subcategory,
             rating,
             sortPrice,
             pageNumber
          })
         )
-      }, [state.values[0], state.values[1], category, rating, sortPrice,  pageNumber, dispatch])
+      }, [state.values[0], state.values[1], category, subcategory, rating, sortPrice,  pageNumber, dispatch])
     
 
       
@@ -71,6 +89,7 @@ const Shops = () => {
             low: state.values[0],
             high: state.values[1],
             category,
+            subcategory,
             rating: '',
             sortPrice,
             pageNumber
@@ -115,9 +134,35 @@ const Shops = () => {
                     <div className='py-2'>
                        {
                         categorys.map((c, i) => 
-                            <div key={i} className='flex justify-start items-center gap-2 py-1'>
-                               <input checked={category === encodeURIComponent(c.slug) ? true : false} onChange={(e) => queryCategory(e, encodeURIComponent(c.slug))} type="checkbox" id={c.slug}/>
-                               <label className='text-slate-600 block cursor-pointer' htmlFor={c.slug}>{c.name}</label>
+                            <div key={i}>
+                               <div className='flex justify-start items-center gap-2 py-1'>
+                                  <input 
+                                     checked={category === encodeURIComponent(c.slug)} 
+                                     onChange={(e) => queryCategory(e, encodeURIComponent(c.slug))} 
+                                     type="checkbox" 
+                                     id={c.slug}
+                                  />
+                                  <label className='text-slate-600 block cursor-pointer flex-1' htmlFor={c.slug}>{c.name}</label>
+                                  {expandedCategory === encodeURIComponent(c.slug) && subcategories.length > 0 && (
+                                     <MdKeyboardArrowDown className='text-slate-600' />
+                                  )}
+                               </div>
+                               {/* Sous-catégories */}
+                               {expandedCategory === encodeURIComponent(c.slug) && subcategories.length > 0 && (
+                                  <div className='ml-6 mt-1 mb-2'>
+                                     {subcategories.map((sub, j) => (
+                                        <div key={j} className='flex justify-start items-center gap-2 py-1'>
+                                           <input 
+                                              checked={subcategory === encodeURIComponent(sub.slug)} 
+                                              onChange={(e) => querySubcategory(e, encodeURIComponent(sub.slug))} 
+                                              type="checkbox" 
+                                              id={sub.slug}
+                                           />
+                                           <label className='text-slate-500 text-sm block cursor-pointer' htmlFor={sub.slug}>{sub.name}</label>
+                                        </div>
+                                     ))}
+                                  </div>
+                               )}
                             </div>
                         )
                        }

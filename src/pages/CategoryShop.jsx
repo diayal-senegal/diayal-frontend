@@ -11,24 +11,31 @@ import { FaThList } from 'react-icons/fa';
 import ShopProducts from '../components/products/ShopProducts';
 import Pagination from '../components/Pagination';
 import { useSelector, useDispatch } from 'react-redux';
-import { price_range_product, query_products } from '../store/reducers/homeReducer';
+import { price_range_product, query_products, get_subcategories } from '../store/reducers/homeReducer';
 import Products from '../components/products/Products';
 
 
 
 const CategoryShop = () => {
 
-    let [searchParams] = useSearchParams();
+    let [searchParams, setSearchParams] = useSearchParams();
     const category = decodeURIComponent(searchParams.get('category') || '');
+    const subcategory = decodeURIComponent(searchParams.get('subcategory') || '');
 
-    console.log(category);
+    console.log(category, subcategory);
 
     const dispatch = useDispatch();
-    const {products, categorys, latest_product, priceRange, totalProduct, parPage } = useSelector(state => state.home)
+    const {products, categorys, subcategories, latest_product, priceRange, totalProduct, parPage } = useSelector(state => state.home)
 
     useEffect(() => {
         dispatch(price_range_product())
       }, [dispatch])
+
+    useEffect(() => {
+        if (category) {
+            dispatch(get_subcategories(category))
+        }
+    }, [category, dispatch])
 
     useEffect(() => {
         setState({ values: [priceRange.low, priceRange.high ]})
@@ -53,12 +60,13 @@ const CategoryShop = () => {
             low: state.values[0] || '',
             high: state.values[1] || '',
             category,
+            subcategory,
             rating,
             sortPrice,
             pageNumber
          })
         )
-      }, [state.values[0], state.values[1], category, rating, sortPrice,  pageNumber, dispatch])
+      }, [state.values[0], state.values[1], category, subcategory, rating, sortPrice,  pageNumber, dispatch])
     
 
       
@@ -69,11 +77,21 @@ const CategoryShop = () => {
             low: state.values[0],
             high: state.values[1],
             category,
+            subcategory,
             rating: '',
             sortPrice,
             pageNumber
          })
         )
+    }
+
+    const handleSubcategoryClick = (subcategorySlug) => {
+        if (subcategorySlug) {
+            setSearchParams({ category, subcategory: subcategorySlug })
+        } else {
+            setSearchParams({ category })
+        }
+        setPageNumber(1)
     }
     return (
         <div>
@@ -92,6 +110,40 @@ const CategoryShop = () => {
               </div>
              </div>
            </section> 
+
+              {/* Section Sous-catégories */}
+              {subcategories.length > 0 && (
+                <section className='py-6 bg-white border-b'>
+                  <div className='w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] mx-auto'>
+                    <h3 className='text-lg font-semibold text-slate-700 mb-4'>Sous-catégories :</h3>
+                    <div className='flex flex-wrap gap-3'>
+                      <button
+                        onClick={() => handleSubcategoryClick('')}
+                        className={`px-4 py-2 rounded-full border transition-all duration-200 ${
+                          !subcategory 
+                            ? 'bg-[#059473] text-white border-[#059473]' 
+                            : 'bg-white text-slate-600 border-slate-300 hover:border-[#059473] hover:text-[#059473]'
+                        }`}
+                      >
+                        Tous
+                      </button>
+                      {subcategories.map((sub, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleSubcategoryClick(sub.slug)}
+                          className={`px-4 py-2 rounded-full border transition-all duration-200 ${
+                            subcategory === sub.slug 
+                              ? 'bg-[#059473] text-white border-[#059473]' 
+                              : 'bg-white text-slate-600 border-slate-300 hover:border-[#059473] hover:text-[#059473]'
+                          }`}
+                        >
+                          {sub.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              )}
 
               <section className='py-16'>
                 <div className='w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] mx-auto h-full'>

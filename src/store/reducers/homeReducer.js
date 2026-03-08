@@ -20,6 +20,20 @@ export const get_category = createAsyncThunk(
 )
 //End Method
 
+export const get_subcategories = createAsyncThunk(
+    'product/get_subcategories',
+    async(categorySlug, { fulfillWithValue, rejectWithValue }) => {
+        try {
+            const {data} = await api.get(`/home/get-subcategories/${categorySlug}`)
+            return fulfillWithValue(data)
+        } catch (error) {
+            console.log(error.response);
+            return rejectWithValue(error)
+        }
+    }
+)
+//End Method
+
 export const get_products = createAsyncThunk(
     'product/get_products',
     async(_, { fulfillWithValue, rejectWithValue }) => {
@@ -58,7 +72,8 @@ export const query_products = createAsyncThunk(
     'product/query_products',
     async(query, { fulfillWithValue, rejectWithValue }) => {
         try {
-            const { data } = await api.get(`/home/query-products?category=${query.category}&&rating=${
+            const { data } = await api.get(`/home/query-products?category=${query.category}&&subcategory=${
+                query.subcategory || ''}&&rating=${
                 query.rating}&&lowPrice=${query.low}&&highPrice=${query.high}&&sortPrice=${
                 query.sortPrice}&&pageNumber=${query.pageNumber}&&searchValue=${query.searchValue ? query.searchValue : ''}&&type=${query.type || 'product'}`)
 
@@ -203,6 +218,7 @@ export const homeReducer = createSlice({
     name: 'home',
     initialState: {
        categorys : [],
+       subcategories : [],
        products : [],
        totalProduct : 0,
        parPage : 3,
@@ -253,6 +269,9 @@ export const homeReducer = createSlice({
         builder
         .addCase(get_category.fulfilled, (state, { payload }) => {
            state.categorys = payload.categorys; 
+        })
+        .addCase(get_subcategories.fulfilled, (state, { payload }) => {
+           state.subcategories = payload.subcategories; 
         })
         .addCase(get_products.fulfilled, (state, { payload }) => {
            state.products = payload.products; 
