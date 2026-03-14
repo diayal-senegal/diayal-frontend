@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { get_orders, delete_order, messageClear } from '../../store/reducers/orderReducer';
 import { FaBorderAll, FaEye, FaCreditCard, FaFilter, FaTrash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 const Orders = () => {
-    const [state, setState] = useState('all');
+    const [searchParams] = useSearchParams();
+    const statusFromUrl = searchParams.get('status') || 'all';
+    const [state, setState] = useState(statusFromUrl);
     
     const translatePaymentStatus = (status) => {
         const translations = {
@@ -44,15 +46,53 @@ const Orders = () => {
         fetchOrders()
       }, [dispatch, state, userInfo])
 
-      // Auto-refresh toutes les 30 secondes
+      // Mettre à jour le filtre quand l'URL change
       useEffect(() => {
-        if (userInfo && userInfo.id) {
-          const interval = setInterval(() => {
-            fetchOrders()
-          }, 30000)
-          return () => clearInterval(interval)
-        }
-      }, [state, userInfo])
+        setState(statusFromUrl);
+      }, [statusFromUrl]);
+
+      // Auto-refresh optimisé avec Page Visibility API
+      useEffect(() => {
+        if (!userInfo?.id) return;
+
+        let interval;
+
+        const startPolling = () => {
+          // Polling toutes les 60 secondes (au lieu de 30)
+          interval = setInterval(() => {
+            fetchOrders();
+          }, 60000);
+        };
+
+        const stopPolling = () => {
+          if (interval) {
+            clearInterval(interval);
+            interval = null;
+          }
+        };
+
+        // Gérer la visibilité de la page
+        const handleVisibilityChange = () => {
+          if (document.hidden) {
+            stopPolling(); // Arrêter le polling quand l'onglet est inactif
+          } else {
+            fetchOrders(); // Rafraîchir immédiatement quand l'onglet redevient actif
+            startPolling(); // Redémarrer le polling
+          }
+        };
+
+        // Démarrer le polling initial
+        startPolling();
+
+        // Écouter les changements de visibilité
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        // Cleanup
+        return () => {
+          stopPolling();
+          document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+      }, [state, userInfo]);
 
 
  

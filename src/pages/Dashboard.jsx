@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { FaList, FaHeart } from 'react-icons/fa';
+import { FaList, FaHeart, FaMapMarkerAlt } from 'react-icons/fa';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { IoIosHome, IoMdLogOut } from "react-icons/io";
-import { FaBorderAll } from "react-icons/fa6";
+import { FaBorderAll, FaUser } from "react-icons/fa6";
 import { BsChatDotsFill } from "react-icons/bs";
 import { RiLockPasswordLine } from "react-icons/ri";
 import api from '../api/api';
@@ -69,6 +69,34 @@ const Dashboard = () => {
                               >
                                 <span className='text-xl group-hover:scale-110 transition-transform duration-200'><IoIosHome /></span>
                                 <span className='font-medium'>Tableau de bord</span>
+                              </Link>
+                            </li>
+
+                            <li>
+                              <Link 
+                                to='/dashboard/profile' 
+                                className={`flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-200 group ${
+                                  isActive('/dashboard/profile') 
+                                    ? 'bg-gradient-to-r from-[#059473] to-[#047857] text-white shadow-md' 
+                                    : 'text-gray-700 hover:bg-gradient-to-r hover:from-[#059473] hover:to-[#047857] hover:text-white'
+                                }`}
+                              >
+                                <span className='text-xl group-hover:scale-110 transition-transform duration-200'><FaUser /></span>
+                                <span className='font-medium'>Mon profil</span>
+                              </Link>
+                            </li>
+
+                            <li>
+                              <Link 
+                                to='/dashboard/addresses' 
+                                className={`flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-200 group ${
+                                  isActive('/dashboard/addresses') 
+                                    ? 'bg-gradient-to-r from-[#059473] to-[#047857] text-white shadow-md' 
+                                    : 'text-gray-700 hover:bg-gradient-to-r hover:from-[#059473] hover:to-[#047857] hover:text-white'
+                                }`}
+                              >
+                                <span className='text-xl group-hover:scale-110 transition-transform duration-200'><FaMapMarkerAlt /></span>
+                                <span className='font-medium'>Mes adresses</span>
                               </Link>
                             </li>
 

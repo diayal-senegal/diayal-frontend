@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import './App.css';
 import './debug'; // Debug temporaire
+import ErrorBoundary from './components/ErrorBoundary';
 import Home from './pages/Home';
 import Shops from './pages/Shops';
 import Card from './pages/Card';
@@ -24,6 +25,8 @@ import Orders from './components/dashboard/Orders';
 import Wishlist from './components/dashboard/Wishlist';
 import ChangePassword from './components/dashboard/ChangePassword';
 import OrderDetails from './components/dashboard/OrderDetails';
+import Profile from './components/dashboard/Profile';
+import Addresses from './components/dashboard/Addresses';
 import ConfirmOrder from './pages/ConfirmOrder';
 import Chat from './components/dashboard/Chat';
 import PaymentSuccess from './components/PaymentSuccess';
@@ -56,7 +59,8 @@ function App() {
   }, [dispatch]);
 
   return (
-    <BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
       <Toaster
         position="top-right"
         toastOptions={{
@@ -124,6 +128,8 @@ function App() {
           <Route element={<Dashboard />}>
             {/* Page par défaut quand tu entres sur /dashboard */}
             <Route index element={<Index />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="addresses" element={<Addresses />} />
             <Route path="my-orders" element={<Orders />} />
             <Route path="my-wishlist" element={<Wishlist />} />
             <Route path="change-password" element={<ChangePassword />} />
@@ -134,7 +140,8 @@ function App() {
           </Route>
         </Route>
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 

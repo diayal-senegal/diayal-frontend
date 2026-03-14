@@ -22,6 +22,7 @@ const Chat = () => {
     const [receverMessage,setReceverMessage] = useState('')
     const [activeSeller,setActiveSeller] = useState([])
     const [show, setShow] = useState(false)
+    const [sending, setSending] = useState(false)
     
     // Fonction pour vérifier si un vendeur est en ligne
     const isSellerOnline = (sellerId) => {
@@ -40,21 +41,40 @@ const Chat = () => {
     },[userInfo])
 
     useEffect(() => {
-        dispatch(add_friend({
-            sellerId: sellerId || "",
-            userId: userInfo.id
-        }))
+        const loadFriend = async () => {
+            try {
+                await dispatch(add_friend({
+                    sellerId: sellerId || "",
+                    userId: userInfo.id
+                })).unwrap();
+            } catch (error) {
+                console.error('Erreur chargement ami:', error);
+                toast.error('Impossible de charger la conversation');
+            }
+        };
+        
+        if (sellerId && userInfo.id) {
+            loadFriend();
+        }
     },[sellerId,userInfo.id,dispatch])
 
-    const send = () => {
-        if (text) {
-            dispatch(send_message({
+    const send = async () => {
+        if (!text.trim()) return;
+        
+        try {
+            setSending(true);
+            await dispatch(send_message({
                 userId: userInfo.id,
                 text,
                 sellerId,
                 name: userInfo.name 
-            }))
-            setText('')
+            })).unwrap();
+            setText('');
+        } catch (error) {
+            console.error('Erreur envoi message:', error);
+            toast.error('Impossible d\'envoyer le message. Réessayez.');
+        } finally {
+            setSending(false);
         }
     }
 
@@ -266,10 +286,14 @@ const Chat = () => {
                                         
                                         <button 
                                             onClick={send}
-                                            disabled={!text.trim()}
-                                            className='w-10 h-10 flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105'
+                                            disabled={!text.trim() || sending}
+                                            className='w-10 h-10 flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100'
                                         >
-                                            <IoSend className='text-lg' />
+                                            {sending ? (
+                                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                            ) : (
+                                                <IoSend className='text-lg' />
+                                            )}
                                         </button>
                                     </div>
                                 </div>

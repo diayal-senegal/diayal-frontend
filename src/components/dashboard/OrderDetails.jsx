@@ -1,20 +1,79 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import { get_order_details } from '../../store/reducers/orderReducer';
+import toast from 'react-hot-toast';
 
 const OrderDetails = () => {
   const { orderId } = useParams();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const { userInfo } = useSelector((state) => state.auth);
   const { myOrder } = useSelector((state) => state.order);
 
+  const fetchOrderDetails = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      await dispatch(get_order_details(orderId)).unwrap();
+    } catch (err) {
+      const errorMessage = err?.message || 'Erreur lors du chargement des détails';
+      setError(errorMessage);
+      toast.error('Impossible de charger les détails de la commande');
+      console.error('Erreur OrderDetails:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    dispatch(get_order_details(orderId));
+    if (orderId) {
+      fetchOrderDetails();
+    }
   }, [dispatch, orderId]);
 
 
+
+  // Affichage pendant le chargement
+  if (loading) {
+    return (
+      <div className="w-full max-w-7xl mx-auto px-4 py-6">
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#059473] mb-4"></div>
+          <p className="text-gray-600 font-medium">Chargement des détails...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Affichage en cas d'erreur
+  if (error) {
+    return (
+      <div className="w-full max-w-7xl mx-auto px-4 py-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
+          <div className="text-6xl mb-4">❌</div>
+          <h3 className="text-xl font-semibold text-red-800 mb-2">Erreur de chargement</h3>
+          <p className="text-red-600 mb-6">{error}</p>
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={fetchOrderDetails}
+              className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+            >
+              Réessayer
+            </button>
+            <Link
+              to="/dashboard/my-orders"
+              className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium"
+            >
+              Retour aux commandes
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-6 space-y-6">
@@ -28,7 +87,7 @@ const OrderDetails = () => {
             <p className="text-gray-500 text-sm">Passée le {myOrder.date || 'Date inconnue'}</p>
           </div>
           <button 
-            onClick={() => dispatch(get_order_details(orderId))}
+            onClick={fetchOrderDetails}
             className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md font-medium text-sm transition-colors duration-200"
           >
             Actualiser

@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { FaEye, FaCreditCard } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { get_dashboard_index_data } from '../../store/reducers/dashboardRducer';
 import { get_orders } from '../../store/reducers/orderReducer';
+import toast from 'react-hot-toast';
 
 
 const Index = () => {
@@ -14,6 +15,9 @@ const Index = () => {
   const {userInfo} = useSelector(state => state.auth)
   const {recentOrders, totalOrder, pendingOrder, cancelledOrder} = useSelector(state => state.dashboard)
   const { myOrders } = useSelector(state => state.order) // Fallback data
+  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const translatePaymentStatus = (status) => {
     const translations = {
@@ -36,14 +40,32 @@ const Index = () => {
     return translations[status] || status;
   };
 
-  useEffect(() => {
-    if (userInfo && userInfo.id) {
+  const fetchDashboardData = async () => {
+    if (!userInfo?.id) return;
+    
+    try {
+      setLoading(true);
+      setError(null);
       console.log('Fetching dashboard data for user:', userInfo.id);
-      dispatch(get_dashboard_index_data(userInfo.id))
+      
+      // Charger les données du dashboard
+      await dispatch(get_dashboard_index_data(userInfo.id)).unwrap();
+      
       // Fallback: charger aussi les commandes directement
-      dispatch(get_orders({status: 'all', customerId: userInfo.id}))
+      await dispatch(get_orders({status: 'all', customerId: userInfo.id})).unwrap();
+      
+    } catch (err) {
+      console.error('Erreur chargement dashboard:', err);
+      setError(err?.message || 'Erreur lors du chargement des données');
+      toast.error('Impossible de charger le tableau de bord');
+    } finally {
+      setLoading(false);
     }
-  }, [dispatch, userInfo])
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [userInfo]);
 
   // Debug: Afficher les données reçues
   useEffect(() => {
@@ -51,30 +73,28 @@ const Index = () => {
     console.log('Orders fallback:', myOrders);
   }, [totalOrder, pendingOrder, cancelledOrder, recentOrders, myOrders])
 
-  // Calcul des statistiques depuis myOrders si les données dashboard ne sont pas disponibles
-  const calculateStats = () => {
-    if (!myOrders || myOrders.length === 0) return { total: 0, pending: 0, cancelled: 0 };
-    
-    const total = myOrders.length;
-    const pending = myOrders.filter(order => 
-      order.delivery_status === 'pending' || 
-      order.delivery_status === 'placed' || 
-      order.delivery_status === 'processing' ||
-      order.delivery_status === 'warehouse' ||
-      order.delivery_status === 'shipping'
-    ).length;
-    const cancelled = myOrders.filter(order => order.delivery_status === 'cancelled').length;
-    
-    return { total, pending, cancelled };
-  };
+  // Statuts considérés comme "en attente"
+  const PENDING_STATUSES = ['pending', 'placed', 'processing', 'warehouse', 'shipping'];
 
-  const stats = calculateStats();
-  
-  // Utiliser les données dashboard si disponibles, sinon utiliser le fallback
-  const displayTotalOrder = totalOrder !== undefined ? totalOrder : stats.total;
-  const displayPendingOrder = pendingOrder !== undefined ? pendingOrder : stats.pending;
-  const displayCancelledOrder = cancelledOrder !== undefined ? cancelledOrder : stats.cancelled;
-  const displayRecentOrders = recentOrders && recentOrders.length > 0 ? recentOrders : (myOrders ? myOrders.slice(0, 5) : []);
+  // Calcul optimisé des statistiques avec useMemo (évite recalculs inutiles)
+  const fallbackStats = useMemo(() => {
+    if (!myOrders || myOrders.length === 0) {
+      return { total: 0, pending: 0, cancelled: 0, recent: [] };
+    }
+    
+    return {
+      total: myOrders.length,
+      pending: myOrders.filter(order => PENDING_STATUSES.includes(order.delivery_status)).length,
+      cancelled: myOrders.filter(order => order.delivery_status === 'cancelled').length,
+      recent: myOrders.slice(0, 5)
+    };
+  }, [myOrders]);
+
+  // Utiliser les données backend en priorité, fallback si indisponible
+  const displayTotalOrder = totalOrder ?? fallbackStats.total;
+  const displayPendingOrder = pendingOrder ?? fallbackStats.pending;
+  const displayCancelledOrder = cancelledOrder ?? fallbackStats.cancelled;
+  const displayRecentOrders = (recentOrders && recentOrders.length > 0) ? recentOrders : fallbackStats.recent;
 
 
   const redirect = (ord) => {
@@ -92,11 +112,45 @@ const Index = () => {
       }})
   }
 
+  // Affichage pendant le chargement
+  if (loading) {
     return (
+      <div>
+        <div className='flex flex-col items-center justify-center min-h-[400px]'>
+          <div className='animate-spin rounded-full h-16 w-16 border-b-2 border-[#059473] mb-4'></div>
+          <p className='text-gray-600 font-medium'>Chargement du tableau de bord...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Affichage en cas d'erreur (avec fallback)
+  if (error && !myOrders) {
+    return (
+      <div>
+        <div className='bg-red-50 border border-red-200 rounded-lg p-8 text-center'>
+          <div className='text-6xl mb-4'>⚠️</div>
+          <h3 className='text-xl font-semibold text-red-800 mb-2'>Erreur de chargement</h3>
+          <p className='text-red-600 mb-6'>{error}</p>
+          <button
+            onClick={fetchDashboardData}
+            className='px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium'
+          >
+            Réessayer
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
         <div>
             <div className='grid grid-cols-3 md:grid-cols-1 gap-5'>
 
-              <div className='flex justify-center items-center p-5 bg-white rounded-md gap-5 shadow'>
+              <Link 
+                to='/dashboard/my-orders?status=all'
+                className='flex justify-center items-center p-5 bg-white rounded-md gap-5 shadow hover:shadow-xl transition-all duration-200 cursor-pointer transform hover:scale-105'
+              >
                 <div className='bg-green-100 w-[47px] h-[47px] rounded-full flex justify-center items-center text-xl'>
                   <span className='text-xl text-green-800'><RiShoppingCart2Fill /></span>
                 </div>
@@ -104,9 +158,12 @@ const Index = () => {
                   <h2 className='text-3xl font-bold'>{displayTotalOrder}</h2>
                   <span>Commandes passées</span>
                  </div>
-              </div>
+              </Link>
 
-              <div className='flex justify-center items-center p-5 bg-white rounded-md gap-5 shadow'>
+              <Link 
+                to='/dashboard/my-orders?status=pending'
+                className='flex justify-center items-center p-5 bg-white rounded-md gap-5 shadow hover:shadow-xl transition-all duration-200 cursor-pointer transform hover:scale-105'
+              >
                 <div className='bg-yellow-100 w-[47px] h-[47px] rounded-full flex justify-center items-center text-xl'>
                   <span className='text-yellow-800'><RiShoppingCart2Fill /></span>
                 </div>
@@ -114,9 +171,12 @@ const Index = () => {
                   <h2 className='text-3xl font-bold'>{displayPendingOrder}</h2>
                   <span>Commandes en attente</span>
                  </div>
-              </div>
+              </Link>
 
-              <div className='flex justify-center items-center p-5 bg-white rounded-md gap-5 shadow'>
+              <Link 
+                to='/dashboard/my-orders?status=cancelled'
+                className='flex justify-center items-center p-5 bg-white rounded-md gap-5 shadow hover:shadow-xl transition-all duration-200 cursor-pointer transform hover:scale-105'
+              >
                 <div className='bg-red-100 w-[47px] h-[47px] rounded-full flex justify-center items-center text-xl'>
                   <span className='text-red-800'><RiShoppingCart2Fill /></span>
                 </div>
@@ -124,11 +184,19 @@ const Index = () => {
                   <h2 className='text-3xl font-bold'>{displayCancelledOrder}</h2>
                   <span>Commandes annulées</span>
                  </div>
-              </div>
+              </Link>
 
             </div>
             <div className='bg-white p-5 mt-5 rounded-md shadow'>
-              <h2 className='text-xl font-semibold mb-4'>Commandes récentes</h2>
+              <div className='flex justify-between items-center mb-4'>
+                <h2 className='text-xl font-semibold'>Commandes récentes</h2>
+                <button
+                  onClick={fetchDashboardData}
+                  className='px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md font-medium text-sm transition-colors duration-200'
+                >
+                  Actualiser
+                </button>
+              </div>
              <div className='pt-4'>
            {/* Version Desktop */}
            <div className='md-lg:hidden relative overflow-x-auto rounded-md'>
@@ -186,8 +254,11 @@ const Index = () => {
                    
                     ) : (
                       <tr className='bg-white border-b'>
-                        <td colSpan='5' className='px-6 py-4 text-center text-gray-500'>
-                          Aucune commande récente
+                        <td colSpan='5' className='px-6 py-8 text-center'>
+                          <div className='text-gray-500'>
+                            <div className='text-4xl mb-2'>📦</div>
+                            <p>Aucune commande récente</p>
+                          </div>
                         </td>
                       </tr>
                     )
@@ -243,8 +314,9 @@ const Index = () => {
               </div>
             </div>
           )) : (
-            <div className='text-center py-8 text-gray-500'>
-              Aucune commande récente
+            <div className='text-center py-8'>
+              <div className='text-4xl mb-2'>📦</div>
+              <p className='text-gray-500'>Aucune commande récente</p>
             </div>
           )}
         </div>

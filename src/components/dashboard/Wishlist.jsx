@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaEye, FaRegHeart, FaHeart } from 'react-icons/fa';
 import { RiShoppingCartLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
@@ -9,34 +9,98 @@ import toast from 'react-hot-toast';
 
 
 const Wishlist = () => {
-
-
   const dispatch = useDispatch();
   const { userInfo } = useSelector(state => state.auth);
   const { wishlist, successMessage, errorMessage } = useSelector(state => state.card);
+  
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(null); // ID du produit en cours d'action
 
   useEffect(() => {
-    if (userInfo?.id) {
-      dispatch(get_wishlist_products(userInfo.id));
-    }
+    const loadWishlist = async () => {
+      if (userInfo?.id) {
+        try {
+          setLoading(true);
+          await dispatch(get_wishlist_products(userInfo.id)).unwrap();
+        } catch (error) {
+          console.error('Erreur chargement wishlist:', error);
+          toast.error('Impossible de charger vos favoris');
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    
+    loadWishlist();
   }, [userInfo, dispatch]);
+
+  const handleRemoveWishlist = async (productId) => {
+    try {
+      setActionLoading(productId);
+      await dispatch(remove_wishlist(productId)).unwrap();
+      toast.success('Produit retiré des favoris');
+      if (userInfo?.id) {
+        await dispatch(get_wishlist_products(userInfo.id)).unwrap();
+      }
+    } catch (error) {
+      console.error('Erreur suppression wishlist:', error);
+      toast.error('Impossible de retirer le produit');
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleAddToCart = async (productId) => {
+    if (!userInfo?.id) {
+      toast.error('Veuillez vous connecter');
+      return;
+    }
+    
+    try {
+      setActionLoading(productId);
+      await dispatch(add_to_card({ userId: userInfo.id, quantity: 1, productId })).unwrap();
+      toast.success('Produit ajouté au panier');
+    } catch (error) {
+      console.error('Erreur ajout panier:', error);
+      toast.error('Impossible d\'ajouter au panier');
+    } finally {
+      setActionLoading(null);
+    }
+  };
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage);
       dispatch(messageClear());
-      if (userInfo?.id) {
-        dispatch(get_wishlist_products(userInfo.id));
-      }
     }
     if (errorMessage) {
       toast.error(errorMessage);
       dispatch(messageClear());
     }
-  }, [successMessage, errorMessage, dispatch, userInfo]);
+  }, [successMessage, errorMessage, dispatch]);
 
 
 
+    
+    // Affichage pendant le chargement
+    if (loading) {
+      return (
+        <div className='w-full'>
+          <div className='flex items-center gap-3 mb-6'>
+            <div className='p-2 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-lg'>
+              <FaHeart className='text-xl' />
+            </div>
+            <div>
+              <h2 className='text-2xl font-bold text-gray-800'>Mes favoris</h2>
+              <p className='text-gray-500 text-sm'>Chargement...</p>
+            </div>
+          </div>
+          <div className='flex flex-col items-center justify-center min-h-[400px]'>
+            <div className='animate-spin rounded-full h-16 w-16 border-b-2 border-pink-500 mb-4'></div>
+            <p className='text-gray-600 font-medium'>Chargement de vos favoris...</p>
+          </div>
+        </div>
+      );
+    }
     
     return (
         <div className='w-full'>
@@ -75,11 +139,16 @@ const Wishlist = () => {
                                 <div className='absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center'>
                                     <div className='flex gap-2 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300'>
                                         <button 
-                                            onClick={() => dispatch(remove_wishlist(p._id))} 
-                                            className='w-9 h-9 bg-white text-red-500 rounded-full flex items-center justify-center shadow-lg hover:bg-red-500 hover:text-white transition-all duration-200'
+                                            onClick={() => handleRemoveWishlist(p._id)}
+                                            disabled={actionLoading === p._id}
+                                            className='w-9 h-9 bg-white text-red-500 rounded-full flex items-center justify-center shadow-lg hover:bg-red-500 hover:text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
                                             title='Retirer des favoris'
                                         >
-                                            <FaRegHeart className='text-sm' />
+                                            {actionLoading === p._id ? (
+                                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-500"></div>
+                                            ) : (
+                                                <FaRegHeart className='text-sm' />
+                                            )}
                                         </button>
                                         
                                         <Link 
@@ -91,11 +160,16 @@ const Wishlist = () => {
                                         </Link>
                                         
                                         <button 
-                                            onClick={() => userInfo?.id && dispatch(add_to_card({ userId: userInfo.id, quantity: 1, productId: p.productId }))} 
-                                            className='w-9 h-9 bg-white text-[#059473] rounded-full flex items-center justify-center shadow-lg hover:bg-[#059473] hover:text-white transition-all duration-200'
+                                            onClick={() => handleAddToCart(p.productId)}
+                                            disabled={actionLoading === p._id}
+                                            className='w-9 h-9 bg-white text-[#059473] rounded-full flex items-center justify-center shadow-lg hover:bg-[#059473] hover:text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
                                             title='Ajouter au panier'
                                         >
-                                            <RiShoppingCartLine className='text-sm' />
+                                            {actionLoading === p._id ? (
+                                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#059473]"></div>
+                                            ) : (
+                                                <RiShoppingCartLine className='text-sm' />
+                                            )}
                                         </button>
                                     </div>
                                 </div>
