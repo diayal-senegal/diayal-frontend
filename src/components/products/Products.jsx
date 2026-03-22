@@ -66,7 +66,7 @@ const Products = ({title,products}) => {
                         p.map((pl, j) =>
                         <Link key={j} className='flex justify-start items-start' to={`/product/details/${pl.slug}`}>
                         <div className='relative'>
-                        <img className='w-[110px] h-[110px]' src={pl.images[0]} alt="" />
+                        <img className='w-[110px] h-[110px]' src={pl.images[0]} alt={pl.name} loading="lazy" />
                         {pl.discount > 0 && (
                           <span className='absolute top-1 left-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm z-10'>
                             -{pl.discount}%

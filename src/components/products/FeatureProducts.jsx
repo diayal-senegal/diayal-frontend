@@ -99,6 +99,7 @@ const FeatureProducts = ({ products }) => {
                   className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
                   src={p.images[0]}
                   alt={p.name}
+                  loading="lazy"
                 />
               </div>
 

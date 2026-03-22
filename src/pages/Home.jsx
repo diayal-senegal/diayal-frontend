@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Banner from '../components/Banner';
 import Categorys from '../components/Categorys';
@@ -56,7 +57,7 @@ const Home = () => {
       <div 
         className="relative bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('https://images-eu.ssl-images-amazon.com/images/G/31/img23/Fashion/Event/Gateway/AugART23/AFD_PC_HERO_2x._CB599381476_.jpg')"
+          // backgroundImage: "url('https://images-eu.ssl-images-amazon.com/images/G/31/img23/Fashion/Event/Gateway/AugART23/AFD_PC_HERO_2x._CB599381476_.jpg')"
         }}
       >
         {/* Dégradé pour la lisibilité */}
@@ -83,16 +84,31 @@ const Home = () => {
         <div className='w-[85%] flex flex-wrap mx-auto'>
           <div className='grid w-full grid-cols-3 md-lg:grid-cols-1 gap-7'>
 
-            <div className='overflow-hidden bg-white/95 backdrop-blur-sm shadow-lg rounded-lg'>
+            <div className='overflow-hidden bg-white/95 backdrop-blur-sm shadow-lg rounded-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 ease-in-out'>
               <Products title='Nouveautés' products={latest_product} />
+              <div className='px-6 py-5 border-t border-gray-100'>
+                <Link to='/new-arrivals' className='block w-full text-center text-sm text-gray-700 hover:text-blue-600 font-medium py-2 hover:bg-gray-50 rounded transition-colors duration-200'>
+                  Voir toutes les nouveautés →
+                </Link>
+              </div>
             </div>
 
-            <div className='overflow-hidden bg-white/95 backdrop-blur-sm shadow-lg rounded-lg'>
+            <div className='overflow-hidden bg-white/95 backdrop-blur-sm shadow-lg rounded-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 ease-in-out'>
               <Products title='Les mieux notés' products={topRated_product} />
+              <div className='px-6 py-5 border-t border-gray-100'>
+                <Link to='/bestsellers' className='block w-full text-center text-sm text-gray-700 hover:text-purple-600 font-medium py-2 hover:bg-gray-50 rounded transition-colors duration-200'>
+                  Voir les mieux notés →
+                </Link>
+              </div>
             </div>
 
-            <div className='overflow-hidden bg-white/95 backdrop-blur-sm shadow-lg rounded-lg'>
+            <div className='overflow-hidden bg-white/95 backdrop-blur-sm shadow-lg rounded-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 ease-in-out'>
               <Products title='Articles en promotions' products={discount_product} />
+              <div className='px-6 py-5 border-t border-gray-100'>
+                <Link to='/deals' className='block w-full text-center text-sm text-gray-700 hover:text-red-600 font-medium py-2 hover:bg-gray-50 rounded transition-colors duration-200'>
+                  Voir toutes les promotions →
+                </Link>
+              </div>
             </div>
 
           </div>

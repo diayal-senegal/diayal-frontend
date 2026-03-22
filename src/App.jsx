@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import './App.css';
 import './debug'; // Debug temporaire
 import ErrorBoundary from './components/ErrorBoundary';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Shops from './pages/Shops';
 import Card from './pages/Card';
@@ -61,6 +62,7 @@ function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
+      <ScrollToTop />
       <Toaster
         position="top-right"
         toastOptions={{
