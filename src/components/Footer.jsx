@@ -71,7 +71,7 @@ const Footer = () => {
         setIsLoading(true)
         
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/newsletter/subscribe`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/newsletter/subscribe`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
