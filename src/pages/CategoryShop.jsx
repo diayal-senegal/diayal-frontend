@@ -21,6 +21,8 @@ const CategoryShop = () => {
     let [searchParams, setSearchParams] = useSearchParams();
     const category = decodeURIComponent(searchParams.get('category') || '');
     const subcategory = decodeURIComponent(searchParams.get('subcategory') || '');
+    const sellerId = searchParams.get('sellerId') || '';
+    const type = searchParams.get('type') || 'product';
 
     console.log(category, subcategory);
 
@@ -61,12 +63,14 @@ const CategoryShop = () => {
             high: state.values[1] || '',
             category,
             subcategory,
+            sellerId,
+            type,
             rating,
             sortPrice,
             pageNumber
          })
         )
-      }, [state.values[0], state.values[1], category, subcategory, rating, sortPrice,  pageNumber, dispatch])
+      }, [state.values[0], state.values[1], category, subcategory, sellerId, type, rating, sortPrice, pageNumber, dispatch])
     
 
       
@@ -78,6 +82,7 @@ const CategoryShop = () => {
             high: state.values[1],
             category,
             subcategory,
+            sellerId,
             rating: '',
             sortPrice,
             pageNumber

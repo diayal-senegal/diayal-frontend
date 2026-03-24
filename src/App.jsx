@@ -50,6 +50,7 @@ import Bestsellers from './pages/Bestsellers';
 import NewArrivals from './pages/NewArrivals';
 import CustomerService from './pages/CustomerService';
 import AdminDeals from './pages/AdminDeals';
+import ArtisansDuMois from './pages/ArtisansDuMois';
 
 
 function App() {
@@ -115,6 +116,7 @@ function App() {
         <Route path="/deals" element={<Deals />} />
         <Route path="/bestsellers" element={<Bestsellers />} />
         <Route path="/new-arrivals" element={<NewArrivals />} />
+        <Route path="/artisans-du-mois" element={<ArtisansDuMois />} />
         <Route path="/customer-service" element={<CustomerService />} />
         
         {/* ✅ Admin */}

@@ -1,4 +1,10 @@
 import React, { Suspense} from 'react';
+
+const resizeObserverErr = window.onerror;
+window.onerror = (msg, ...args) => {
+  if (msg.includes('ResizeObserver')) return true;
+  return resizeObserverErr ? resizeObserverErr(msg, ...args) : false;
+};
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';

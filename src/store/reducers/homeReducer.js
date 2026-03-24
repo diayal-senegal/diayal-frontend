@@ -75,7 +75,7 @@ export const query_products = createAsyncThunk(
             const { data } = await api.get(`/home/query-products?category=${query.category}&&subcategory=${
                 query.subcategory || ''}&&rating=${
                 query.rating}&&lowPrice=${query.low}&&highPrice=${query.high}&&sortPrice=${
-                query.sortPrice}&&pageNumber=${query.pageNumber}&&searchValue=${query.searchValue ? query.searchValue : ''}&&type=${query.type || 'product'}`)
+                query.sortPrice}&&pageNumber=${query.pageNumber}&&searchValue=${query.searchValue ? query.searchValue : ''}&&type=${query.type || 'product'}&&sellerId=${query.sellerId || ''}`)
 
             // console.log(data);
             

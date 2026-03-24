@@ -243,7 +243,8 @@ const Header = () => {
         { to: '/deals', label: 'Promotions' },
         { to: '/bestsellers', label: 'Meilleures ventes' },
         { to: '/new-arrivals', label: 'Nouveautés' },
-        { to: '/about', label: 'À propos' },
+         { to: '/artisans-du-mois', label: 'Artisans du mois' },
+        {/* { to: '/about', label: 'À propos' }, */}
       ].map(link => (
         <Link
           key={link.to}
