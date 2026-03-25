@@ -26,7 +26,7 @@ const ArtisansDuMois = () => {
       <Header />
       
       {/* Hero Section - Magazine Style */}
-      <div className='relative h-[70vh] overflow-hidden'>
+      <div className='relative h-[40vh] overflow-hidden'>
         <div 
           className='absolute inset-0 bg-gradient-to-br from-[#059473] via-[#37475A] to-[#2c3e50]'
           style={{
@@ -46,17 +46,17 @@ const ArtisansDuMois = () => {
                 {currentMonth}
               </span>
             </div>
-            <h1 className='text-4xl md:text-4xl font-bold text-white mb-5 leading-tight'>
-              Artisans du Mois
+            <h1 className='text-4xl md:text-2xl font-bold text-white mb-2 leading-tight'>
+              Artisans du moment
             </h1>
-            <p className='text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed'>
+            <p className='text-xl md:text-1xl text-white/90 max-w-2xl mx-auto leading-relaxed'>
               Découvrez les histoires inspirantes des artisans qui façonnent l'excellence de notre plateforme
             </p>
           </div>
         </div>
 
         {/* Scroll Indicator */}
-        <div className='absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce'>
+        <div className='absolute bottom-1 left-1/2 transform -translate-x-1/2 animate-bounce'>
           <div className='w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2'>
             <div className='w-1 h-3 bg-white/50 rounded-full'></div>
           </div>
@@ -74,16 +74,16 @@ const ArtisansDuMois = () => {
             {artisans.map((artisan, index) => (
               <article key={artisan._id} className='relative'>
                 {/* Artisan Story Section */}
-                <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8'>
+                <div className='flex flex-col sm:flex-row gap-6 lg:gap-8'>
                   
                   {/* Image + Infos - Colonne 1 */}
-                  <div className='lg:col-span-1 space-y-4'>
+                  <div className='lg:col-span-1 space-y-3 order-1'>
                     <div className='relative group'>
-                      <div className='absolute -top-4 -left-4 z-20'>
+                      <div className='absolute -top-4 -left-6 z-20'>
                         <div className='bg-gradient-to-br from-yellow-400 to-yellow-600 text-white px-4 py-2 rounded-xl shadow-lg'>
                           <div className='flex items-center gap-2'>
                             <span className='text-xl'>⭐</span>
-                            <span className='font-bold text-xs'>Artisan du Mois</span>
+                            <span className='font-bold text-xs'>Artisan du Moment</span>
                           </div>
                         </div>
                       </div>
@@ -109,7 +109,7 @@ const ArtisansDuMois = () => {
                                 <div className='absolute inset-0 bg-black/40 flex items-center justify-center'>
                                   <button
                                     onClick={() => setPlayingVideo(artisan._id)}
-                                    className='w-16 h-16 bg-white/90 hover:bg-white rounded-full flex items-center justify-center transform hover:scale-110 transition-all shadow-2xl'
+                                    className='w-16 h-16 bg-white/40 hover:bg-white rounded-full flex items-center justify-center transform hover:scale-110 transition-all shadow-2xl'
                                   >
                                     <FaPlay className='text-[#059473] text-xl ml-1' />
                                   </button>
@@ -128,7 +128,7 @@ const ArtisansDuMois = () => {
                     </div>
 
                     {/* Carte Infos combinée sous l'image */}
-                    <div className='bg-white p-4 rounded-xl border border-gray-100 shadow-sm'>
+                    <div className='bg-white p-2 rounded-xl border border-gray-100 shadow-sm'>
                       <div className='space-y-1'>
                         {artisan.shopInfo?.district && (
                           <div className='flex items-center gap-3'>
@@ -156,7 +156,7 @@ const ArtisansDuMois = () => {
                   </div>
 
                   {/* Description - Colonne 2 */}
-                  <div className='lg:col-span-1'>
+                  <div className='lg:col-span-1 '>
                     <div className='relative bg-gradient-to-br from-gray-50 to-white p-6 md:p-8 lg:p-10 rounded-xl border border-gray-100 shadow-sm h-full flex flex-col justify-center min-h-[200px] lg:min-h-[350px]'>
                       <div className='mb-4'>
                         <div className='flex items-center gap-2 mb-2'>
@@ -300,7 +300,7 @@ const ArtisansDuMois = () => {
       </div>
 
       {/* CTA Section - Become Artisan */}
-      <div className='relative py-24 overflow-hidden'>
+      <div className='relative py-17 overflow-hidden'>
         <div 
           className='absolute inset-0 bg-gradient-to-br from-[#37475A] via-[#2c3e50] to-[#059473]'
           style={{
@@ -328,7 +328,7 @@ const ArtisansDuMois = () => {
           </p>
           <Link 
             to='/vendor'
-            className='inline-flex items-center gap-3 bg-white text-[#059473] px-10 py-5 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 group'
+            className='inline-flex items-center gap-3 bg-white text-[#059473] px-10 py-3 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 group'
           >
             <span>Devenir Vendeur</span>
             <FaArrowRight className='group-hover:translate-x-2 transition-transform' />

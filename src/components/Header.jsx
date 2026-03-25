@@ -243,7 +243,7 @@ const Header = () => {
         { to: '/deals', label: 'Promotions' },
         { to: '/bestsellers', label: 'Meilleures ventes' },
         { to: '/new-arrivals', label: 'Nouveautés' },
-         { to: '/artisans-du-mois', label: 'Artisans du mois' },
+         { to: '/artisans-du-mois', label: 'Artisans du moment' },
         {/* { to: '/about', label: 'À propos' }, */}
       ].map(link => (
         <Link
