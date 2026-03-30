@@ -22,7 +22,7 @@ const ArtisansDuMois = () => {
   const currentMonth = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 
   return (
-    <div className='bg-gray-50'>
+    <div className='bg-black'>
       <Header />
       
       {/* Hero Section - Magazine Style */}
@@ -30,7 +30,7 @@ const ArtisansDuMois = () => {
         <div 
           className='absolute inset-0 bg-gradient-to-br from-[#059473] via-[#37475A] to-[#2c3e50]'
           style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=1920)',
+            backgroundImage: 'url(/images/banner-art1.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundBlendMode: 'multiply'
@@ -192,10 +192,10 @@ const ArtisansDuMois = () => {
                 {artisan.products && artisan.products.length > 0 && (
                   <div className='mt-12'>
                     <div className='text-center mb-6'>
-                      <h3 className='text-xl md:text-2xl font-bold text-gray-900 mb-2'>
+                      <h3 className='text-xl md:text-2xl font-bold text-white mb-2'>
                         Créations Phares
                       </h3>
-                      <p className='text-gray-600 text-sm md:text-base'>
+                      <p className='text-white text-sm md:text-base'>
                         Une sélection des meilleures œuvres de {artisan.shopInfo?.shopName || artisan.name}
                       </p>
                     </div>
@@ -304,7 +304,7 @@ const ArtisansDuMois = () => {
         <div 
           className='absolute inset-0 bg-gradient-to-br from-[#37475A] via-[#2c3e50] to-[#059473]'
           style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1556740758-90de374c12ad?w=1920)',
+            backgroundImage: 'url(/images/banner-art2.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundBlendMode: 'multiply'

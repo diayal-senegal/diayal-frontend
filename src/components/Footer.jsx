@@ -120,7 +120,7 @@ const Footer = () => {
                             />
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed">
-                            La marketplace #1 au Sénégal pour acheter et vendre en toute confiance.
+                            La marketplace artisanale n°1 au Sénégal pour acheter et vendre en toute confiance.
                         </p>
                         <ul className="flex flex-col gap-2 text-gray-400 text-sm leading-relaxed">
                             <li>

@@ -235,16 +235,16 @@ const Header = () => {
   {/* Overlay sombre pour lisibilité */}
   <div className='absolute inset-0 bg-[#37475A]/80'></div>
 
-  <div className='relative w-[95%] mx-auto'>
-    <div className='flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-center'>
+  <div className='relative w-[99%] mx-auto'>
+    <div className='flex flex-wrap items-center justify-center gap-4 sm:gap-4 text-center'>
       {[
         { to: '/', label: 'Accueil' },
-        { to: '/shops', label: 'Boutique' },
+        { to: '/shops', label: 'Nos boutiques' },
         { to: '/deals', label: 'Promotions' },
         { to: '/bestsellers', label: 'Meilleures ventes' },
         { to: '/new-arrivals', label: 'Nouveautés' },
          { to: '/artisans-du-mois', label: 'Artisans du moment' },
-        {/* { to: '/about', label: 'À propos' }, */}
+        { to: '/about', label: 'À propos' },
       ].map(link => (
         <Link
           key={link.to}
